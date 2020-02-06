@@ -13,11 +13,11 @@ environments:
     production:
         grails:
             mongodb:
-                host: "10.20.30.40"
-                port: 27017
+                host: "127.0.0.1"
+                port: 27018
                 databaseName: "production"
-                username: "changeme"
-                password: "changeme"
+                #username: "changeme"
+                #password: "changeme"
                 options:
                   socketTimeout: 0
 ---
