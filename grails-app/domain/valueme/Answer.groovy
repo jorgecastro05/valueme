@@ -7,7 +7,8 @@ class Answer {
 	Integer valueScale
 	List<CustomField> customFields
 
-	static embedded = ['question','customFields']
+	static hasMany = [customFields: CustomField]
+	static belongsTo = [question: Question]
 
 	static constraints = {
 		// value indicates current value entered, object is current object

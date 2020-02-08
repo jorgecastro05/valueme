@@ -58,7 +58,7 @@ class ScoreService {
     /*
     Obtener el puntaje de una encuesta para un usuario particular
      */
-    def getScore(String userAccount, int vigency, String categoryType){
+    def getScore(UserAccount userAccount, int vigency, String categoryType){
         List<Assessment> assessments = Assessment.findAllByUserAccountAndVigencyAndFinished(userAccount,vigency,true)
         def scoresByCategory = this.getScoreByAssessmentsAndCategoryType(assessments,categoryType)
 
@@ -66,7 +66,7 @@ class ScoreService {
         result.scoreData = this.googleAPIprocess(scoresByCategory.scoresByCategory)
         result.categoryType = categoryType
         result.vigency = vigency
-        result.userAccount = userAccount
+        result.userAccount = userAccount.id
         result.questions = scoresByCategory.scores
 
         return result
@@ -74,7 +74,7 @@ class ScoreService {
 
     /*
     Retorna a partir de una categoria padre, los resultados de las categorias hijas
-    category pertenece a una categoria de MECI
+    category pertenece a una categoria de MECI.
      */
     def getScoreByAssessmentsAndCategory(String categoryId, int vigency){
 
@@ -117,6 +117,7 @@ class ScoreService {
         result.category = category
         result.categoryName = category.category
         result.vigency = vigency
+        result.categoryId = categoryId
         return result
     }
 

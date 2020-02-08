@@ -7,6 +7,9 @@ class Survey {
 	List<Question> questions
 	int vigency
 
+	static belongsTo = [category: Category]	
+	static hasMany = [questions: Question]
+
     static constraints = {
     	category unique: 'vigency'
     }

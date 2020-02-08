@@ -87,7 +87,7 @@ class AssessmentController {
         // validate number of assesments
         int number = Param.findByName('survey.maxAssessments')?.value?.toInteger()
         int vigency = Schedule.findByActive(true).vigency
-        UserAccount user = new UserAccount(id:springSecurityService.principal.id)
+        UserAccount user = UserAccount.findById(springSecurityService.principal.id)
         if(Assessment.findAllByUserAccountAndVigency(user,vigency).size() > number){
             transactionStatus.setRollbackOnly()
             flash.error =  message(code: 'assessment.maxAssessments.message')

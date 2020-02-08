@@ -4,6 +4,7 @@
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 [pattern: '/',               					access: ['permitAll']],
 [pattern: '/error',          					access: ['permitAll']],
+[pattern: '/dbconsole/**',          			        access: ['permitAll']],
 [pattern: '/index',          					access: ['permitAll']],
 [pattern: '/index.gsp',      					access: ['permitAll']],
 [pattern: '/userAccount/forgetPassword.gsp',    access: ['permitAll']],
@@ -47,3 +48,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
 //grails.plugin.springsecurity.logout.postOnly = false
 grails.app.context = '/valueme'
 grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/meci/index'
+
+grails.gorm.default.mapping = {
+        cache true
+        id generator:'uuid'
+}

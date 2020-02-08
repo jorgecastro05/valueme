@@ -1,33 +1,25 @@
 ---
 environments:
     development:
-        dataSource:
-            pooled: true
-            dbCreate: create-drop
-            url: jdbc:h2:mem:devDb
-            driverClassName: org.h2.Driver
-            username: sa
-            password:
-        hibernate:
-            cache:
-                queries: false
-                use_second_level_cache: true
-                use_query_cache: false
-                region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+        grails:
+            mongodb:
+                host: "127.0.0.1"
+                port: 27018
+                databaseName: "test"
+                #username: "user"
+                #password: user"
+                options:
+                  socketTimeout: 0
     production:
-        dataSource:
-            pooled: true
-            dbCreate: create-drop
-            url: jdbc:h2:mem:prdDb
-            driverClassName: org.h2.Driver
-            username: sa
-            password:
-        hibernate:
-            cache:
-                queries: true
-                use_second_level_cache: true
-                use_query_cache: true
-                region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+        grails:
+            mongodb:
+                host: "127.0.0.1"
+                port: 27018
+                databaseName: "production"
+                #username: "changeme"
+                #password: "changeme"
+                options:
+                  socketTimeout: 0
 ---
 grails:
     profile: web
@@ -117,7 +109,7 @@ endpoints:
 ---
 grails:
     mail:
-        disabled: true
+        disabled: false
         host: smtp.configureme.com
         port: 587
         username: changeme@email.com
@@ -130,6 +122,3 @@ grails:
 grails:
     app:
         context: /valueme
-    dbconsole:
-        enabled: true
-        urlRoot: "/dbconsole"

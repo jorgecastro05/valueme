@@ -4,7 +4,7 @@ class Param {
 
 	String id
 	String name
-	String value
+	String value 
 	String description
 	String label
 
@@ -13,5 +13,9 @@ class Param {
     	name unique: true
 			value nullable: true
 			label nullable: true
+    }
+
+	static mapping = {
+        value column: "value", sqlType: "varchar", length: 5000
     }
 }

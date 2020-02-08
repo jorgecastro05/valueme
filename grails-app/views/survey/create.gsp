@@ -59,7 +59,7 @@
                 <label>
                     <g:message code="question.question.label" />
                 </label>
-                <f:input bean="question" property="question" />
+                 <f:input bean="question" property="question" />
             </div>
             <div class="inline field">
                 <label>

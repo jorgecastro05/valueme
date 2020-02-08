@@ -14,6 +14,8 @@ class UserAccount {
 	int vigencyStart
 	int vigencyEnd
 
+	static belongsTo = [category: Category]
+
 	PasswordEncoder passwordEncoder
 
 	// transient indicates that this object will not saved in database

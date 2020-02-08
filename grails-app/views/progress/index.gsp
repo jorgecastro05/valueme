@@ -40,9 +40,7 @@
             <g:each in="${userAccountList}" var="userAccount">
                 <tr>
                     <td>
-                        <g:link action="show" id="${userAccount.id}">
-                            ${userAccount.userAccount}
-                        </g:link>
+                        ${userAccount.userAccount}
                     </td>
                     <td>
                         ${userAccount.fullName}

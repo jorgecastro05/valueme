@@ -86,6 +86,15 @@ class SurveyController {
             respond survey.errors, view:'create'
             return
         }
+
+        println Survey.findByCategoryAndVigency(survey.category, survey.vigency)
+        if(Survey.findByCategoryAndVigency(survey.category, survey.vigency) != null){
+            println "WARNING: Category ALREADY FOUND"
+            transactionStatus.setRollbackOnly()
+            respond survey.errors, view:'index'
+        }
+
+
         survey.save flush:true
         request.withFormat {
             form multipartForm {

@@ -11,10 +11,11 @@ class Assessment {
 	boolean finished
 	Category category
 
-	static embedded = ['customFields','answers']
+	static belongsTo = [userAccount: UserAccount, category: Category, survey: Survey]
+	static hasMany = [customFields: CustomField, answers: Answer]
 
 	static constraints = {
-		answers cascade: true
+		answers cascade: "all-delete-orphan"
 		finished defaultValue: false
 	}
 }

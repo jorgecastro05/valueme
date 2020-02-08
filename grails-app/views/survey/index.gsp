@@ -78,7 +78,7 @@
                             </td>
                             <td>
                                 <g:link action="show" id="${survey.id}">
-                                    ${survey.category.type} ${survey.category.category}
+                                    ${survey.category.category}
                                 </g:link>
                             </td>
                             <td>

@@ -7,6 +7,8 @@ class Question {
 	Category category
 	boolean active
 
+	static belongsTo = [category: Category]
+
     static constraints = {
     	question unique : true
     }

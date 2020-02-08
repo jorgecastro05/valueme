@@ -8,7 +8,7 @@
       <p>
         ${child.description}
       </p>
-        <g:set var="questions" value="${assessment.answers.question.findAll{it?.category?.id == child.id}.sort{it.order}}"/>
+        <g:set var="questions" value="${assessment.answers.question.findAll{it?.category?.id == child.id}}"/>
         <g:if test="${questions}">
             <table class="ui very compact celled structured table">
                 <thead>

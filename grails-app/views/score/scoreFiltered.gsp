@@ -32,7 +32,8 @@
                 <label>
                     <g:message code="score.category.label"/>
                 </label>
-                <g:select class="ui search dropdown" optionKey="id" optionValue="${{it.type + " - " + it.category}}" from="${valueme.Category.findAllByTypeInList(['Módulo','Componente','Elemento'], [sort: "type", order: "desc"])}" value="${category}" name="category"/>
+                <g:select class="ui search dropdown" optionKey="id" 
+                optionValue="${{it.type + " - " + it.category}}" from="${valueme.Category.findAllByTypeInList(['Módulo','Componente'], [sort: "type", order: "desc"])}" value="${category}" name="category"/>
             </div>
             <div class=" ui segment">
                 <h4 class="ui horizontal divider header">

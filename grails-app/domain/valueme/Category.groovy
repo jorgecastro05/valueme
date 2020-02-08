@@ -12,9 +12,12 @@ class Category {
 	int order
 	String description
 
+	static hasOne = [parent:Category]
+	static hasMany = [childs: Category]
+
 	static constraints = {
 		parent nullable: true
-		category unique: true
+		category unique: 'type'
 		category index: true
 		type index: true
 		description nullable: true
@@ -22,6 +25,7 @@ class Category {
 
 	static mapping = {
 		sort order: "asc"
+		order column: "order_number"
 	}
 
 }

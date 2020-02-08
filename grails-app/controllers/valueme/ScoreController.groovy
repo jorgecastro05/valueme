@@ -5,6 +5,7 @@ import grails.plugin.springsecurity.annotation.Secured
 class ScoreController {
 
     def scoreService
+    def springSecurityService
 
     def getScore(String categoryType, int vigency){
         if(vigency!=0){
@@ -25,7 +26,8 @@ class ScoreController {
     @Secured('ROLE_gestionar evaluación')
     def individualScore(String userAccount, int vigency, String categoryType){
         if(vigency!=0){
-            respond scoreService.getScore(userAccount,vigency,categoryType)
+            UserAccount user = UserAccount.findById(userAccount)
+            respond scoreService.getScore(user,vigency,categoryType)
         }
     }
 
