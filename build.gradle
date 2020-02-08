@@ -16,13 +16,14 @@ group "valueme"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
-apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
 
-war {
-    archiveName "${war.baseName}.war"
+springBoot {
+    // Enable the creation of a fully
+    // executable archive file.
+    executable = true
 }
 
 repositories {
@@ -77,17 +78,8 @@ task wrapper(type: Wrapper) {
 }
 
 task stage() {
-    dependsOn clean, war
+    dependsOn assemble
 }
-
-//copy the war into libs
-task copyToLib(type: Copy) {
-    into "$buildDir/libs"
-    from(configurations.compile)
-}
-
-stage.dependsOn(copyToLib)
-
 
 //Skip Tests
 gradle.taskGraph.whenReady {
