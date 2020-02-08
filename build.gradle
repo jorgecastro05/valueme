@@ -72,4 +72,27 @@ assets {
     minifyCss = true
 }
 
-task stage(dependsOn: ['war'])
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+
+task stage() {
+    dependsOn clean, war
+}
+
+//copy the war into libs
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
+
+
+//Skip Tests
+gradle.taskGraph.whenReady {
+  taskGraph ->
+    if (taskGraph.hasTask(stage)) {
+      test.enabled = false
+    }
+}
