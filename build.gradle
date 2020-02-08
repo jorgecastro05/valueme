@@ -72,5 +72,5 @@ assets {
     minifyCss = true
 }
 
-task stage(dependsOn: ['build', 'clean', 'war'])
-build.mustRunAfter clean
+task stage(dependsOn: ['assemble', 'clean', 'war'])
+assemble.mustRunAfter clean
