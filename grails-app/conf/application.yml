@@ -1,5 +1,7 @@
 ---
 grails:
+    app:
+        context: /valueme
     profile: web
     codegen:
         defaultPackage: valueme

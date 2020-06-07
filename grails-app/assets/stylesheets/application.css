@@ -7,9 +7,234 @@
 * You're free to add application-wide styles to this file and they'll appear at the top of the
 * compiled file, but it's generally better to create a new file per style scope.
 *
-*= require bootstrap
-*= require grails
-*= require main
-*= require mobile
+*= require semantic.min
+*= require errors
+*= require calendar
 *= require_self
 */
+.ui.segment.questions {
+    background-image: url("background.jpg");
+}
+
+.blue.segment {
+    background-image: url("background.jpg");
+}
+
+.meci-brackgound {
+    background-image: url("meci.png");
+    
+}
+
+.hidden-field {
+    visibility: hidden;
+}
+
+.Site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.Site-content {
+    flex: 1;
+}
+
+.step {
+    display: inline-block;
+    margin: 0 0.1em;
+    padding: 0.25em 0.7em;
+    text-decoration: none;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    border-radius: 0.3em;
+}
+
+body {
+    background-color: #E8E8E8;
+}
+
+.footer.segment {
+    background-color: #008db6;
+    color: white;
+}
+
+.banner.row {
+    background-color: #E8E8E8;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:hover {
+    color: black;
+}
+
+.stackable.menu {
+    background-color: #009dcb;
+}
+
+.ui.menu .header.item, .ui.vertical.menu .header.item {
+    color: white;
+}
+
+.ui.menu:not(.vertical) .item {
+    font-weight: bold;
+    color: white;
+}
+
+.small.text {
+    font-size: 90%;
+}
+
+
+/* Numered Lists*/
+
+ol {
+    counter-reset: item1;
+    padding-left: 1.2em;
+}
+
+ol li {
+    display: block;
+    position: relative;
+}
+
+ol li:before {
+    content: counter(item1)".";
+    counter-increment: item1;
+    position: absolute;
+    margin-right: 100%;
+    right: 10px;
+    /* space between number and text */
+}
+
+ol ol {
+    counter-reset: item2;
+}
+
+ol ol li:before {
+    content: counter(item1)"."counter(item2)".";
+    counter-increment: item2;
+}
+
+ol ol ol {
+    counter-reset: item3;
+}
+
+ol ol ol li:before {
+    content: counter(item1)"."counter(item2)"."counter(item3)".";
+    counter-increment: item3;
+}
+
+ol ol ol ol {
+    counter-reset: item4;
+}
+
+ol ol ol ol li:before {
+    content: counter(item1)"."counter(item2)"."counter(item3)"."counter(item4)".";
+    counter-increment: item4;
+}
+
+
+/* Display acordion on category user Account*/
+
+.ui.horizontal.accordion.menu>.item {
+    display: block;
+    flex: 1 1 auto;
+}
+
+.map {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.radioArea:hover {
+    background: #fee7c5;
+    cursor: pointer;
+}
+
+.radioArea:hover {
+    background: #fee7c5;
+    cursor: pointer;
+}
+
+.newbg {
+    background: #fee7c5;
+}
+
+.meci.blue {
+    transition: all .2s ease-in-out;
+}
+
+.meci.red {
+    transition: all .2s ease-in-out;
+}
+
+.meci.blue:hover {
+    color: blue;
+    transform: scale(1.1);
+}
+
+.meci.red:hover {
+    color: red;
+    transform: scale(1.1);
+}
+
+.meci.image {
+    transition: all .2s ease-in-out;
+}
+
+.meci.image:hover {
+    transform: scale(1.1);
+}
+
+.meci.title {
+    transition: all .2s ease-in-out;
+}
+
+.meci.title:hover {
+    text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+}
+
+.question {
+    width: 350px;
+}
+
+.category {
+    text-transform: capitalize;
+}
+
+h4.category {
+    text-transform: capitalize;
+}
+
+.banner {
+    color: #0099CC;
+
+    /*text-shadow: 1px 1px 1px #00BFFF;*/
+    text-shadow: 0px 0px 6px  #CCFFCC;
+}
+
+.meci.transversal {
+    color: #f6b20f;
+    text-shadow: 1px 1px 1px #e75b0d;
+}
+
+.ui.fluid.container {
+    padding: 1em;
+}
+
+.table.body {
+    background-color: #fef7eb;
+}
+
+.ui.very.compact.celled.structured.table th {
+    background: #fdcf8c;
+}
+
+.ui.very.compact.celled.structured.table td.question {
+    text-align: justify;
+    background-color: #fee7c5;
+}
