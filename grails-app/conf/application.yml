@@ -1,58 +1,38 @@
 ---
-environments:
-    development:
-        dataSource:
-            pooled: true
-            dbCreate: create-drop
-            url: jdbc:h2:mem:devDb
-            driverClassName: org.h2.Driver
-            username: sa
-            password:
-        hibernate:
-            cache:
-                queries: false
-                use_second_level_cache: true
-                use_query_cache: false
-                region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-    production:
-        dataSource:
-            pooled: true
-            dbCreate: create-drop
-            url: jdbc:h2:mem:prdDb
-            driverClassName: org.h2.Driver
-            username: sa
-            password:
-        hibernate:
-            cache:
-                queries: true
-                use_second_level_cache: true
-                use_query_cache: true
-                region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
----
 grails:
     profile: web
     codegen:
         defaultPackage: valueme
-    spring:
-        transactionManagement:
-            proxies: false
-    server:
-        sessionTimeout: 7200  #seconds
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
 info:
     app:
         name: '@info.app.name@'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
+    jmx:
+        unique-names: true
+    main:
+        banner-mode: "off"
     groovy:
         template:
             check-template-location: false
-
-# Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: false
-    jmx:
-        enabled: true
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
+management:
+    endpoints:
+        enabled-by-default: false
 
 ---
 grails:
@@ -95,9 +75,6 @@ grails:
         defaultScope: singleton
     converters:
         encoding: UTF-8
-        default:
-            pretty:
-                print: true
     views:
         default:
             codec: html
@@ -106,30 +83,55 @@ grails:
             htmlcodec: xml
             codecs:
                 expression: html
-                scriptlets: html
+                scriptlet: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
-
-
----
-grails:
-    mail:
-        disabled: true
-        host: smtp.configureme.com
-        port: 587
-        username: changeme@email.com
-        password: changeme
-        props:
-            mail.smtp.starttls.enable: true
-            mail.smtp.port: 587
+management:
+    endpoints:
+        jmx:
+            unique-names: true
 
 ---
-grails:
-    app:
-        context: /valueme
-    dbconsole:
-        enabled: true
-        urlRoot: "/dbconsole"
+hibernate:
+    cache:
+        queries: false
+        use_second_level_cache: false
+        use_query_cache: false
+dataSource:
+    pooled: true
+    jmxExport: true
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+
+environments:
+    development:
+        dataSource:
+            dbCreate: create-drop
+            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    test:
+        dataSource:
+            dbCreate: update
+            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    production:
+        dataSource:
+            dbCreate: none
+            url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            properties:
+                jmxEnabled: true
+                initialSize: 5
+                maxActive: 50
+                minIdle: 5
+                maxIdle: 25
+                maxWait: 10000
+                maxAge: 600000
+                timeBetweenEvictionRunsMillis: 5000
+                minEvictableIdleTimeMillis: 60000
+                validationQuery: SELECT 1
+                validationQueryTimeout: 3
+                validationInterval: 15000
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: false
+                jdbcInterceptors: ConnectionState
+                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
