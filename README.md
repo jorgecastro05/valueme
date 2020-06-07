@@ -43,3 +43,11 @@ There is also a `Dockerfile` for make deployments using docker containers, for e
 `sudo podman run -p 8080:8080 valueme-app:latest`
 
 The enviroment variables `$PORT` and `JAVA_OPTS` can be used to change the application port and java parameters.
+
+## RoadMap to future releases
+
+- Upgrade to Grails latest release
+- Upgrade Spring security to the latest version.
+- Upgrade semantic ui to latest release
+- Create Frontend with JS Framework (Angular, React)
+- Change architecture to microservices backend
