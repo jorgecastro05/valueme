@@ -2,7 +2,6 @@ package valueme
 
 class Question {
 
-	String id
 	String text
 	Category category
 	boolean active

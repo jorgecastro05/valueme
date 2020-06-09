@@ -11,7 +11,7 @@ class BootStrap {
 
     @Transactional
     void populate() {
-        println "Init bootstraping application"
+        log.info "Init bootstraping application"
         Role role1 = new Role(authority : "ROLE_gestionar evaluación").save(failOnError: true)
         Role role2 = new Role(authority : "ROLE_realizar evaluación").save(failOnError: true)
         Role role3 = new Role(authority : "ROLE_gestion usuarios").save(failOnError: true)
@@ -170,7 +170,10 @@ class BootStrap {
         UserAccount user = new UserAccount( fullName : "user", password : "1", username : "user@valueme.com", category: Category.findByName("Área de Servicios")).save(failOnError: true)
         UserAccountRoleGroup.create user, evaluador
 
-        println "Finished bootstraping application"
+        //Create test assessment
+        
+
+        log.info "Finished bootstraping application"
     }
 
 }

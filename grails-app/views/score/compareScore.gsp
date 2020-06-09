@@ -41,7 +41,7 @@
                     <label>
                         <g:message code="score.category.compareFirst.label" />
                     </label>
-                    <g:select class="ui search dropdown" optionKey="id" optionValue="category" from="${valueme.Category.findAllByType(valueme.Param.findByName('survey.categoryType')?.value)}" value="${categoryA}" name="categoryA" />
+                    <g:select class="ui search dropdown" optionKey="id" optionValue="category" from="${categories}" value="${categoryA}" name="categoryA" />
                 </div>
                 <h4 class="ui horizontal divider header"><i class="bar chart icon"></i>Resultados Consolidados</h4>
                 <g:if test="${scoreA}">
@@ -54,7 +54,7 @@
                     <label>
                         <g:message code="score.category.compareAll.label" />
                     </label>
-                    <g:select class="ui search dropdown" multiple="true" optionKey="id" optionValue="category" from="${valueme.Category.findAllByType(valueme.Param.findByName('survey.categoryType')?.value)}" value="${categoryB}" name="categoryB" />
+                    <g:select class="ui search dropdown" multiple="true" optionKey="id" optionValue="category" from="${categories}" value="${categoryB}" name="categoryB" />
                 </div>
                 <h4 class="ui horizontal divider header"><i class="bar chart icon"></i>Resultados Consolidados</h4>
                 <g:if test="${scoreB}">

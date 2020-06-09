@@ -40,7 +40,7 @@
                     <label>
                         <g:message code="userAccount.label" />
                     </label>
-                    <g:select class="ui search dropdown" optionKey="id" optionValue="${{it.userAccount + (it.category ? ' - '+it.category.category : '')}}" from="${valueme.UserAccount.findAllByActive(true)}" value="${userAccount}" name="userAccount" />
+                    <g:select class="ui search dropdown" optionKey="id" optionValue="${{it.username + (it.category ? ' - '+it.category.name : '')}}" from="${valueme.UserAccount.findAllByEnabled(true)}" value="${username}" name="username" />
                 </div>
                     <button class="ui blue fluid button" type="submit">
                         <g:message code="score.getResults.label" />
@@ -61,9 +61,9 @@
                     Resultado por pregunta
                </h4>
                     <ol>
-                        <g:each in="${valueme.Category.findAllByType(valueme.Param.findByName('question.categoryType')?.value)}" var="category">
+                        <g:each in="${categories}" var="category">
                             <li class="category" style="color: ${category.color};">
-                                ${category.type} ${category.category}
+                                ${category.type.name} ${category.name}
                             </li>
                             <g:render template="step" model="${[category: category]}"/>
                         </g:each>

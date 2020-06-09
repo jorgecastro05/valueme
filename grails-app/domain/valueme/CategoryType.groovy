@@ -2,7 +2,6 @@ package valueme
 
 class CategoryType {
 
-	String id
 	String name
 
     static constraints = {

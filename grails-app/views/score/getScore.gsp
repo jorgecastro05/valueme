@@ -64,9 +64,9 @@
                   Resultado por pregunta
              </h4>
                   <ol>
-                      <g:each in="${valueme.Category.findAllByType(valueme.Param.findByName('question.categoryType')?.value)}" var="category">
+                      <g:each in="${categories}" var="category">
                           <li class="category" style="color: ${category.color};">
-                              ${category.type} ${category.category}
+                              ${category.type} ${category.name}
                           </li>
                           <g:render template="step" model="${[category: category]}"/>
                       </g:each>

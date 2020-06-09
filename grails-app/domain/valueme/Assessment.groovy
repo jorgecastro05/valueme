@@ -2,7 +2,6 @@ package valueme
 
 class Assessment {
 
-	String id
 	UserAccount userAccount
 	List<CustomField> customFields
 	List<Answer> answers

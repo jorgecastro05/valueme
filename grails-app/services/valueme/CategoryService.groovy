@@ -23,6 +23,4 @@ class CategoryService {
         return query.list()
     }
 
-
-
 }

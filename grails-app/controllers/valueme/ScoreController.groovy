@@ -6,10 +6,12 @@ class ScoreController {
 
     def scoreService
     def springSecurityService
+    def categoryService
 
     def getScore(String categoryType, int vigency){
         if(vigency!=0){
-            respond scoreService.getScore(categoryType,vigency)
+            def categoryTypeSearch = Param.findByName('question.categoryType')?.value
+            respond scoreService.getScore(categoryType,vigency), model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
         }
     }
 
@@ -19,7 +21,9 @@ class ScoreController {
             if(!(params.categoryB instanceof List)){ // convert in list in case of a single input
                 params.categoryB = params.list('categoryB')
             }
-            respond scoreService.getScore(categoryA, params.categoryB, vigency, categoryType)
+        def categoryTypeSearch = Param.findByName('survey.categoryType')?.value    
+        respond scoreService.getScore(categoryA, params.categoryB, vigency, categoryType), 
+                model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
         }
     }
 
@@ -27,7 +31,8 @@ class ScoreController {
     def individualScore(String userAccount, int vigency, String categoryType){
         if(vigency!=0){
             UserAccount user = UserAccount.findById(userAccount)
-            respond scoreService.getScore(user,vigency,categoryType)
+            def categoryTypeSearch = Param.findByName('question.categoryType')?.value
+            respond scoreService.getScore(user,vigency,categoryType), model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
         }
     }
 

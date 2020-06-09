@@ -2,7 +2,6 @@ package valueme
 
 class Survey {
 
-	String id
 	Category category
 	List<Question> questions
 	int vigency

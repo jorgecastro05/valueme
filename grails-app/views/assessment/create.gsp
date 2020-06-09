@@ -59,9 +59,9 @@
                         </div>
                         <div class="inline field">
                             <label>
-                                ${assessment.category?.type}:
+                                ${assessment.category?.type.name}:
                             </label>
-                            ${assessment.category?.category}
+                            ${assessment.category?.name}
                         </div>
                         <div class="inline field">
                             <label>
@@ -98,9 +98,9 @@
                 </label>
                 <div class="ui segment questions">
                     <ol>
-                        <g:each in="${valueme.Category.findAllByType('Módulo').sort{it.order}}" var="category">
+                        <g:each in="${categories.sort{it.order}}" var="category">
                             <li style="color: ${category.color};">
-                                <h4 class="category">${category.type} ${category.category}</h4>
+                                <h4 class="category">${category.type.name} ${category.name}</h4>
                             </li>
                             <g:render template="step" model="${[category: category]}" />
                         </g:each>

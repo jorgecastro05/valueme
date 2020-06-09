@@ -2,7 +2,6 @@ package valueme
 
 class Category {
 
-    String id
 	String name
 	String color
 	CategoryType type
@@ -12,7 +11,8 @@ class Category {
 	int order
 	String description
 
-	static hasOne = [parent:Category, type:CategoryType]
+	static hasOne = [type: CategoryType]
+	static belongsTo = [parent: Category]
 	static hasMany = [childs: Category]
 
 	static constraints = {

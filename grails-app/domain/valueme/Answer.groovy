@@ -2,7 +2,6 @@ package valueme
 
 class Answer {
 
-	String id
 	Question question
 	Integer valueScale
 	List<CustomField> customFields

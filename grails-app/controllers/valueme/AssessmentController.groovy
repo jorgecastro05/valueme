@@ -11,15 +11,15 @@ import grails.gorm.*
 class AssessmentController {
 
     def springSecurityService
-    def categoryType = Param.findByName("survey.categoryType").value
+    def categoryTypeSurvey = Param.findByName("survey.categoryType").value
+    def categoryTypeQuestion = Param.findByName("question.categoryType").value
     def categoryService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     @Secured('ROLE_gestionar evaluación')
     def index() {
-        
-        render view: 'index', model: [categories: categoryService.listChildCategoriesByType(categoryType)]
+        render view: 'index', model: [categories: categoryService.listChildCategoriesByType(categoryTypeSurvey)]
     }
 
     /*
@@ -44,7 +44,7 @@ class AssessmentController {
     }
 
     def show(Assessment assessment) {
-        respond assessment
+        respond assessment, model: [categories: categoryService.listCategoriesByType(categoryTypeQuestion)]
     }
 
     def create() {
@@ -64,7 +64,7 @@ class AssessmentController {
             }
             assessment.survey = survey
             assessment.vigency = survey.vigency
-            respond assessment
+            respond assessment, model: [categories: categoryService.listCategoriesByType(categoryTypeQuestion)]
 
         } else {
             flash.error =  message(code: 'assessment.noschedule.message')
@@ -116,7 +116,7 @@ class AssessmentController {
     }
 
     def edit(Assessment assessment) {
-        respond assessment
+        respond assessment, model: [categories: categoryService.listCategoriesByType(categoryTypeQuestion)]
     }
 
     /*

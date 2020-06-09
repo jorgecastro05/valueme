@@ -59,7 +59,7 @@
                             <label>
                                 <g:message code="category.label" />
                             </label>
-                            ${assessment.userAccount?.category?.category}
+                            ${assessment.userAccount?.category?.name}
                         </div>
                         <div class="inline field">
                             <label>
@@ -97,9 +97,9 @@
             <div class="field">
                 <div class="ui segment">
                     <ol>
-                        <g:each in="${valueme.Category.findAllByType('Módulo').sort{it.order}}" var="category">
+                        <g:each in="${categories.sort{it.order}}" var="category">
                             <li style="color: ${category.color};">
-                                <h4>${category.type} ${category.category}</h4>
+                                <h4>${category.type.name} ${category.name}</h4>
                             </li>
                             <g:render template="stepShow" model="${[category: category]}" />
                         </g:each>

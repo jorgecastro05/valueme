@@ -2,7 +2,6 @@ package valueme
 
 class Param {
 
-	String id
 	String name
 	String value 
 	String description

@@ -46,12 +46,18 @@ class CategoryController {
             respond category.errors, view:'create'
             return
         }
-
-        categoryService.saveCategory category
-
+        
+        //TODO: convert logic into service
+        Category parent = Category.get(category.parent?.id)
+        if(parent){
+            parent.addToChilds(category)
+            parent.save flush:true
+        }
+        category.save flush:true
+        
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'category.label', default: 'Category'), category.category])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'category.label', default: 'Category'), category.name])
                 flash.categoryType = params.categoryType
                 redirect category
             }
@@ -77,11 +83,11 @@ class CategoryController {
             return
         }
 
-        categoryService.updateCategory category
+        category.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'category.label', default: 'Category'), category.category])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'category.label', default: 'Category'), category.name])
                 flash.categoryType = params.categoryType
                 redirect category
             }
@@ -98,7 +104,7 @@ class CategoryController {
             return
         }
 
-        categoryService.deleteCategory category
+        category.delete flush:true
 
         request.withFormat {
             form multipartForm {

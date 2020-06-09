@@ -67,7 +67,7 @@
                 </g:form>
 
             </div>
-            <div class="ui blue fluid button" id="print-survey">Imprimir</div>
+            <button class="ui blue fluid button" onclick="window.print()">Imprimir</button>
         </body>
 
     </html>

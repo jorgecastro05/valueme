@@ -2,7 +2,7 @@
     <g:each in="${category.childs.sort{it.order}}" var="child">
         <h5>
             <li class="category" style="color: ${child.color}">
-                ${child.type} ${child.category}
+                ${child.type.name} ${child.name}
             </li>
         </h5>
         <p>

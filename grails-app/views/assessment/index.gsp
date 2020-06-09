@@ -68,7 +68,7 @@
                 <tr>
                     <td>
                         <g:link action="show" id="${assessment.id}">
-                            ${assessment.userAccount.userAccount}
+                            ${assessment.userAccount.username}
                         </g:link>
                     </td>
                     <td>
