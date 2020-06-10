@@ -2,13 +2,13 @@
     <g:message code="evalParameters.label"/>
     <div class="menu">
         <sec:access controller='category'>
-            <g:link class="item" controller='category' params="[categoryType:'survey']">
-                ${valueme.Param.findByName('survey.categoryType')?.label}
+            <g:link class="item" controller="category" action="indexProcess">
+                <g:message code="category.process.label"/>
             </g:link>
         </sec:access>
         <sec:access controller='category'>
-            <g:link class="item" controller='category' params="[categoryType:'question']">
-                <g:message code="category.questions.label"/>
+            <g:link class="item" controller="category" action="indexMeci">
+                <g:message code="category.meci.label"/>
             </g:link>
         </sec:access>
         <sec:access controller='categoryType'>

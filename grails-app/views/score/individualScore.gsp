@@ -40,7 +40,7 @@
                     <label>
                         <g:message code="userAccount.label" />
                     </label>
-                    <g:select class="ui search dropdown" optionKey="id" optionValue="${{it.username + (it.category ? ' - '+it.category.name : '')}}" from="${valueme.UserAccount.findAllByEnabled(true)}" value="${username}" name="username" />
+                    <g:select class="ui search dropdown" optionKey="id" optionValue="${{it.username + (it.category ? ' - '+it.category.name : '')}}" from="${valueme.UserAccount.findAllByEnabled(true)}" value="${id}" name="username" />
                 </div>
                     <button class="ui blue fluid button" type="submit">
                         <g:message code="score.getResults.label" />

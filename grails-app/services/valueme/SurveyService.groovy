@@ -41,10 +41,9 @@ class SurveyService {
             //si existe no se debe agregar ni modificar
             // si no existe se debe agregar a la lista de preguntas
             if(!survey.questions.find{ it.id == question.id}){
-		//agregar la pregunta a las encuestas	
-                survey.markDirty('questions') // force GORM for MongoDB to issue an update for the given property name.
+		        //agregar la pregunta a las encuestas	
                 survey.questions.add(question)
-		// guardar la encuesta
+		        // guardar la encuesta
                 survey.save flush: true, failOnError: true
             }
         }

@@ -12,10 +12,5 @@
                 <g:message code="score.individual.label"/>
             </g:link>
         </sec:access>
-        <sec:access controller='score' action="scoreFiltered">
-            <g:link class="item" controller='score' action="scoreFiltered">
-                <g:message code="score.scoreFiltered.label"/>
-            </g:link>
-        </sec:access>
     </div>
 </div>

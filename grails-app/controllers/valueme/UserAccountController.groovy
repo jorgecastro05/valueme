@@ -14,7 +14,6 @@ class UserAccountController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
     def userAccountService
     def categoryService
-    def categoryType = Param.findByName('account.categoryType')?.value
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -47,8 +46,7 @@ class UserAccountController {
     }
 
     def create() {
-        params.password = RandomStringUtils.randomAlphanumeric(12)
-        [userAccount: new UserAccount(params), roles:RoleGroup.list(), categories: categoryService.listRootCategoriesByType(categoryType)]
+        [userAccount: new UserAccount(params), roles:RoleGroup.list(), categories: categoryService.listRootProccessCategories()]
     }
 
     @Transactional
@@ -83,7 +81,7 @@ class UserAccountController {
     }
 
     def edit(UserAccount userAccount) {
-        [userAccount:userAccount, roles:RoleGroup.list(), categories: categoryService.listRootCategoriesByType(categoryType)]
+        [userAccount:userAccount, roles:RoleGroup.list(), categories: categoryService.listRootProccessCategories()]
     }
 
 

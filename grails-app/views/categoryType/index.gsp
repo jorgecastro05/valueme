@@ -49,6 +49,9 @@
                         </g:link>
                     </td>
                     <td>
+                        ${categoryType.applyTo}
+                    </td>
+                    <td>
                     <g:link action="edit" id="${categoryType.id}">
                         <g:message code="default.button.edit.label" />
                     </g:link>

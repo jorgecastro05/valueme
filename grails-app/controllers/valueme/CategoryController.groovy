@@ -13,8 +13,15 @@ class CategoryController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        def categoryType = Param.findByName(params.categoryType + '.categoryType')?.value
-        respond categoryService.listRootCategoriesByType(categoryType), model:[categoryType: params.categoryType]
+        respond Category.list()
+    }
+
+    def indexProcess(){
+        respond categoryService.listRootProccessCategories(), view:'index'
+    }
+
+    def indexMeci(){
+        respond categoryService.listRootMeciCategories(), view:'index'
     }
 
     def show(Category category) {
@@ -47,13 +54,7 @@ class CategoryController {
             return
         }
         
-        //TODO: convert logic into service
-        Category parent = Category.get(category.parent?.id)
-        if(parent){
-            parent.addToChilds(category)
-            parent.save flush:true
-        }
-        category.save flush:true
+        categoryService.saveCategory category 
         
         request.withFormat {
             form multipartForm {
@@ -83,7 +84,7 @@ class CategoryController {
             return
         }
 
-        category.save flush:true
+        categoryService.updateCategory category
 
         request.withFormat {
             form multipartForm {
@@ -104,7 +105,7 @@ class CategoryController {
             return
         }
 
-        category.delete flush:true
+        categoryService.deleteCategory category
 
         request.withFormat {
             form multipartForm {

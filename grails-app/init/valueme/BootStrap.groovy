@@ -49,26 +49,38 @@ class BootStrap {
         new Param(name: 'html.meci', description: 'Texto acerca del meci en la pagina principal en HTML' , value: '').save(failOnError: true)
         new Param(name: 'survey.maxAssessments', description: 'Número maximo de encuestas que un usuario puede completar', value: '1').save(failOnError: true)
 
+        //Create unique root application categories
+        CategoryType rootType = new CategoryType(name: 'ROOT', applyTo: "root").save(failOnError: true)
+        Category meciRoot = new Category(name: 'MECI_ROOT', color: 'FFFFFF', type: rootType, active: true, order: 0).save(failOnError: true)
+        Category processRoot = new Category(name: 'PROCESS_ROOT', color: 'FFFFFF', type: rootType, active: true, order: 0).save(failOnError: true)
 
         //Create MECI Structure 2014 Type Categories
 
-        CategoryType modulo = new CategoryType(name: 'Módulo').save(failOnError: true)
-        CategoryType componente = new CategoryType(name: 'Componente').save(failOnError: true)
-        CategoryType elemento = new CategoryType(name: 'Elemento').save(failOnError: true)
+        CategoryType modulo = new CategoryType(name: 'Módulo', applyTo: "meci").save(failOnError: true)
+        CategoryType componente = new CategoryType(name: 'Componente', applyTo: "meci").save(failOnError: true)
+        CategoryType elemento = new CategoryType(name: 'Elemento', applyTo: "meci").save(failOnError: true)
         //Structure for users
-        CategoryType proceso = new CategoryType(name: 'Proceso').save(failOnError: true)
+        CategoryType proceso = new CategoryType(name: 'Proceso', applyTo: "process").save(failOnError: true)
+        CategoryType area = new CategoryType(name: 'Área', applyTo: "process").save(failOnError: true)
 
-        //Company process or Areas
-        Category estrategico = new Category(name: 'Estratégicos', color: 'FFFFFF', type: proceso, active: true, order: 0).save(failOnError: true)
-        Category misionales = new Category(name: 'Misionales', color: 'FFFFFF', type: proceso, active: true, order: 0).save(failOnError: true)
-        Category servicios = new Category(name: 'Área de Servicios', color: 'FFFFFF', type: proceso, active: true, order: 0).save(flush: true)
-        Category apoyo = new Category(name: 'Apoyo', color: 'FFFFFF', type: proceso, active: true, order: 0)
-        .addToChilds(servicios).save(flush: true)
+        //Principal Process
+        Category estrategico = new Category(name: 'Estratégicos', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(failOnError: true)
+        Category misionales = new Category(name: 'Misionales', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(failOnError: true)
+        Category apoyo = new Category(name: 'Apoyo', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(flush: true)
+        //Child process
+        Category servicios = new Category(name: 'Área de Servicios', color: 'FFFFFF', type: area, active: true, order: 0, parent: apoyo).save(flush: true)
 
+        processRoot
+        .addToChilds(estrategico)
+        .addToChilds(misionales)
+        .addToChilds(apoyo).save(flush: true, failOnError: true)
+
+        apoyo.addToChilds(servicios).save(flush: true, failOnError: true)
 
         //create MECI 2014 Categories
 
-        Category eje_transversal_informacion_y_comunicacion = new Category(name: 'Eje Transversal: Información y Comunicación', color: 'FFFFFF', type: modulo, active: true, order: 2)
+        Category eje_transversal_informacion_y_comunicacion = 
+                new Category(name: 'Eje Transversal: Información y Comunicación', color: 'FFFFFF', type: componente, parent: meciRoot, active: true, order: 2)
 
         Category talento_humano = new Category(name: 'Talento Humano', color: 'FFFFFF', type: componente, active: true, order: 0)
         Category talento_humano_1 = new Category(name: 'Acuerdos, Compromisos y Protocolos éticos', color: 'FFFFFF', type: elemento, active: true, order: 0)
@@ -102,7 +114,8 @@ class BootStrap {
         .addToChilds(administracion_del_riesgo_2)
         .addToChilds(administracion_del_riesgo_3).save(flush: true)
 
-        Category modulo_de_control_de_planeacion_y_gestion = new Category(name: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: modulo, active: true, order: 0)
+        Category modulo_de_control_de_planeacion_y_gestion = 
+                new Category(name: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: modulo, parent: meciRoot, active: true, order: 0)
         .addToChilds(administracion_del_riesgo)
         .addToChilds(direcionamiento_estrategico)
         .addToChilds(talento_humano).save(flush: true)
@@ -123,10 +136,17 @@ class BootStrap {
         
         planes_de_mejoramiento.addToChilds(plan_de_mejoramiento).save(flush: true)
 
-        Category modulo_de_control_de_evaluacion_y_seguimiento = new Category(name: 'Módulo de Control de Evaluación y Seguimiento', color: 'FFFFFF', type: modulo, active: true, order: 1)
+        Category modulo_de_control_de_evaluacion_y_seguimiento = 
+                new Category(name: 'Módulo de Control de Evaluación y Seguimiento', color: 'FFFFFF', type: modulo, parent: meciRoot, active: true, order: 1)
         .addToChilds(planes_de_mejoramiento)
         .addToChilds(auditoria_interna)
         .addToChilds(autoevaluacion_institucional).save(flush: true)
+
+
+        meciRoot
+        .addToChilds(eje_transversal_informacion_y_comunicacion)
+        .addToChilds(modulo_de_control_de_planeacion_y_gestion)
+        .addToChilds(modulo_de_control_de_evaluacion_y_seguimiento).save(flush: true)
 
 
         //Create a example Survey
@@ -171,7 +191,26 @@ class BootStrap {
         UserAccountRoleGroup.create user, evaluador
 
         //Create test assessment
-        
+
+        Answer answer1 = new Answer(question: Question.get(1), valueScale: 4)
+        Answer answer2 = new Answer(question: Question.get(2), valueScale: 4)
+        Answer answer3 = new Answer(question: Question.get(3), valueScale: 4)
+        Answer answer4 = new Answer(question: Question.get(4), valueScale: 5)
+        Answer answer5 = new Answer(question: Question.get(5), valueScale: 4)
+        Answer answer6 = new Answer(question: Question.get(6), valueScale: 4)
+        Answer answer7 = new Answer(question: Question.get(7), valueScale: 1)
+        Answer answer8 = new Answer(question: Question.get(8), valueScale: 4)
+        Answer answer9 = new Answer(question: Question.get(9), valueScale: 4)
+        Answer answer10 = new Answer(question: Question.get(10), valueScale: 2)
+        Answer answer11 = new Answer(question: Question.get(11), valueScale: 4)
+        Answer answer12 = new Answer(question: Question.get(12), valueScale: 5)
+
+        def answers = []
+        answers.addAll([answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, answer10, answer11, answer12])
+
+        Assessment assessment = new Assessment(userAccount: user, vigency: 2020, finished: true, category: Category.findByName("Área de Servicios"), answers: answers, survey: survey )
+
+        assessment.save(failOnError: true)
 
         log.info "Finished bootstraping application"
     }

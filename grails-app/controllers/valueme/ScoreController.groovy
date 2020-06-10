@@ -28,9 +28,9 @@ class ScoreController {
     }
 
     @Secured('ROLE_gestionar evaluación')
-    def individualScore(String userAccount, int vigency, String categoryType){
+    def individualScore(String username, int vigency, String categoryType){
         if(vigency!=0){
-            UserAccount user = UserAccount.findById(userAccount)
+            UserAccount user = UserAccount.findById(username)
             def categoryTypeSearch = Param.findByName('question.categoryType')?.value
             respond scoreService.getScore(user,vigency,categoryType), model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
         }

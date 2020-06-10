@@ -137,3 +137,20 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+---
+grails:
+    mail:
+        disabled: true
+        host: smtp.configureme.com
+        port: 587
+        username: changeme@email.com
+        password: changeme
+        props:
+            mail.smtp.starttls.enable: true
+            mail.smtp.port: 587
+
+---
+valueme:
+    fromEmail: admin@noresponse.com
+    subjectEmail: Aplicativo Valueme
