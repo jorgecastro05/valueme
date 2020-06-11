@@ -36,20 +36,17 @@ class SurveyController {
     }
 
     def show(Survey survey) {
-        def categoryType = Param.findByName('question.categoryType')?.value
-        respond survey, model:[categories: categoryService.listCategoriesByType(categoryType)]
+        respond survey, 
+            model:[categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories()]
     }
 
     def create() {
-        respond new Question(params)
-    }
-
-    def createFromQuestions(){
-        respond new Survey(params)
+        respond new Survey(params), 
+            model: [categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories()]
     }
 
     @Transactional
-    def save(Question question, int vigency){
+    def save(Question question, int vigency){  //TODO: validate
 
         if (question == null) {
             transactionStatus.setRollbackOnly()

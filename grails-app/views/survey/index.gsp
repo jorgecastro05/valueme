@@ -21,17 +21,12 @@
         </g:if>
         <!-- buttons -->
         <div class="ui stackable grid">
-            <div class="seven wide column">
+            <div class="fourteen wide column">
                 <h3><g:message code="${entityName}.list.label"/></h3>
             </div>
-            <div class="four wide column">
+            <div class="two wide column">
                 <g:link class="fluid ui blue fluid button " action="create">
                     <g:message code="default.new.label"/>
-                </g:link>
-            </div>
-            <div class="five wide column">
-                <g:link class="fluid ui blue fluid button " action="createFromQuestions">
-                    <g:message code="default.newFromQuestions.label"/>
                 </g:link>
             </div>
         </div>

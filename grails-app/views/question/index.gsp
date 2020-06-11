@@ -40,6 +40,11 @@
               </label>
                 <button class="ui blue button" type="submit"><g:message code="default.search.label" /></button>
             </div>
+            <div class="four wide column">
+            <g:link class="fluid ui blue fluid button " action="create">
+                <g:message code="default.new.label" />
+            </g:link>
+            </div>
         </div>
     </g:form>
     <div id="list-question" class="content scaffold-list" role="main">

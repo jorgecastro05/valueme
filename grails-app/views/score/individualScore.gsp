@@ -23,7 +23,7 @@
                             <g:message code="score.group.label" />
                             <g:help message="help.score.calculate" />
                         </label>
-                        <g:select class="ui search fluid dropdown" name="categoryType" from='${['Módulo','Componente','Elemento']}' value="${categoryType}"></g:select>
+                        <g:select class="ui search fluid dropdown" name="categoryType" from='${categoryTypes}' optionKey="name" optionValue="name"></g:select>
                     </div>
                     <div class="field">
                         <label>

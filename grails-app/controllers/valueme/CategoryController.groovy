@@ -9,6 +9,7 @@ import grails.plugin.springsecurity.annotation.Secured
 class CategoryController {
 
     def categoryService
+    def categoryTypeService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -17,10 +18,12 @@ class CategoryController {
     }
 
     def indexProcess(){
+        flash.categoryType = "process"
         respond categoryService.listRootProccessCategories(), view:'index'
     }
 
     def indexMeci(){
+        flash.categoryType = "meci"
         respond categoryService.listRootMeciCategories(), view:'index'
     }
 
@@ -32,12 +35,25 @@ class CategoryController {
 
     def filterByParent(Category category){
         def categoryList = Category.findAllByParent(category)
+        flash.categoryType = params.categoryType
         respond categoryList, view:'index'
     }
 
     def create() {
-        flash.categoryType = params.categoryType
-        [category: new Category(params) , categories: Category.list()]
+        def categoryList
+        def categoryTypeList
+        switch(params.categoryType) {
+            case 'meci':
+                categoryList = categoryService.listMeciCategories()
+                categoryTypeList = categoryTypeService.listMeciCategoyTypes()
+            break
+            case 'process':
+                categoryList = categoryService.listProcessCategories()
+                categoryTypeList = categoryTypeService.listProcessCategoryTypes()
+            break
+        }
+
+        [category: new Category(params) , categories: categoryList, categoryTypes: categoryTypeList]
     }
 
     @Transactional
@@ -67,7 +83,19 @@ class CategoryController {
     }
 
     def edit(Category category) {
-        respond category
+        def categoryList
+        def categoryTypeList
+        switch(params.categoryType) {
+            case 'meci':
+                categoryList = categoryService.listMeciCategories()
+                categoryTypeList = categoryTypeService.listMeciCategoyTypes()
+            break
+            case 'process':
+                categoryList = categoryService.listProcessCategories()
+                categoryTypeList = categoryTypeService.listProcessCategoryTypes()
+            break
+        }
+        respond category, model: [categories: categoryList, categoryTypes: categoryTypeList]
     }
 
     @Transactional

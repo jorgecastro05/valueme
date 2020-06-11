@@ -7,11 +7,26 @@ class ScoreController {
     def scoreService
     def springSecurityService
     def categoryService
+    def categoryTypeService
+
+    def indexScore() {
+        render view: 'getScore', model: [categoryTypes: categoryTypeService.listMeciCategoyTypes()]
+    }
+
+    def indexCompareScore() {
+        render view: 'compareScore', model: [categoryTypes: categoryTypeService.listMeciCategoyTypes()]
+    }
+
+    def indexIndividualScore() {
+        render view: 'individualScore', model: [categoryTypes: categoryTypeService.listMeciCategoyTypes()]
+    }
+
 
     def getScore(String categoryType, int vigency){
         if(vigency!=0){
-            def categoryTypeSearch = Param.findByName('question.categoryType')?.value
-            respond scoreService.getScore(categoryType,vigency), model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
+            respond scoreService.getScore(categoryType,vigency), 
+                model:[categories: categoryService.listRootMeciCategories(), 
+                categoryTypes: categoryTypeService.listMeciCategoyTypes()]
         }
     }
 
@@ -23,7 +38,8 @@ class ScoreController {
             }
         def categoryTypeSearch = Param.findByName('survey.categoryType')?.value    
         respond scoreService.getScore(categoryA, params.categoryB, vigency, categoryType), 
-                model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
+                model:[categories: categoryService.listRootMeciCategories(), 
+                categoryTypes: categoryTypeService.listMeciCategoyTypes()]
         }
     }
 
@@ -32,7 +48,9 @@ class ScoreController {
         if(vigency!=0){
             UserAccount user = UserAccount.findById(username)
             def categoryTypeSearch = Param.findByName('question.categoryType')?.value
-            respond scoreService.getScore(user,vigency,categoryType), model:[categories: categoryService.listCategoriesByType(categoryTypeSearch)]
+            respond scoreService.getScore(user,vigency,categoryType), 
+            model:[categories: categoryService.listRootMeciCategories(),
+            categoryTypes: categoryTypeService.listMeciCategoyTypes()]
         }
     }
 

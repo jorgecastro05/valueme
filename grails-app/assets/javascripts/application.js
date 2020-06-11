@@ -106,11 +106,3 @@ $('.copySurveyCategory').click(function(){
 
 // maphiglight process map
 $('.map').maphilight();
-
-//hide custom elements in all pages html - globally
-$('.category:contains("Módulo EJE TRANSVERSAL INFORMACION Y COMUNICACIÓN")')
-    .text('EJE TRANSVERSAL INFORMACION Y COMUNICACIÓN');
-$('.category:contains("Componente Sistemas de información y comunicación")')
-    .text('Sistemas de información y comunicación');
-$('.category:contains("Componente Información y comunicación interna y externa")')
-    .text('Información y comunicación interna y externa');

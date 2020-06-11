@@ -34,13 +34,42 @@ class QuestionController {
     }
 
     def show(Question question) {
-        def categoryType = Param.findByName('question.categoryType')?.value
-        respond question, model:[categories: categoryService.listCategoriesByType(categoryType)]
+        respond question, model:[categories: categoryService.listRootMeciCategories()]
+    }
+
+    def create() {
+        respond new Question(params), model:[categories: categoryService.listRootMeciCategories()]
+    }
+
+    @Transactional
+    def save(Question question) {
+        
+        if (question == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
+
+        if (question.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond question.errors, view:'create'
+            return
+        }
+
+        question.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'question.label', default: 'question'), question.id])
+                redirect question
+            }
+            '*' { respond question, [status: CREATED] }
+        }
     }
 
     def edit(Question question) {
         def categoryType = Param.findByName('question.categoryType')?.value
-        respond question, model:[categories: categoryService.listCategoriesByType(categoryType)]
+        respond question, model:[categories: categoryService.listRootMeciCategories()]
     }
 
     @Transactional

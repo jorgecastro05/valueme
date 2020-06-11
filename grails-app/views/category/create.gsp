@@ -46,7 +46,7 @@
                 <label>
                     <g:message code="category.type.label" />
                 </label>
-                <g:select class="ui fluid dropdown" name="type" value="${category.type}" from='${valueme.CategoryType.list()}' optionKey="id" optionValue="name"></g:select>
+                <g:select class="ui fluid dropdown" name="type" value="${category.type}" from='${categoryTypes}' optionKey="id" optionValue="name"></g:select>
             </div>
             <div class="field">
                 <label>

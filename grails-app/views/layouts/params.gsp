@@ -16,11 +16,6 @@
                 <g:message code="categoryType.list.label"/>
             </g:link>
         </sec:access>
-        <sec:access controller='question'>
-            <g:link class="item" controller='question'>
-                <g:message code="question.list.label"/>
-            </g:link>
-        </sec:access>
         <sec:access controller='customField'>
             <g:link class="item" controller='customField'>
                 <g:message code="customField.list.label"/>

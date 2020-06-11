@@ -2,52 +2,64 @@ package valueme
 
 class CategoryService {
 
-    public final String meciRoot = 'MECI_ROOT';
-    public final String processRoot = 'PROCESS_ROOT';
-
-
     def listRootMeciCategories(){
         def query = Category.where {
-            (parent.name == meciRoot)
+            (parent.name == Constants.MECI_ROOT)
+        }
+        return query.list()
+    }
+
+    def listMeciCategories(){
+        def query = Category.where {
+            (type.applyTo == Constants.MECI_APPLY_TO)
+        }
+        return query.list()
+    }
+
+    def listProcessCategories(){
+        def query = Category.where {
+            (type.applyTo == Constants.PROCESS_APPLY_TO)
         }
         return query.list()
     }
 
     def listRootProccessCategories(){
         def query = Category.where {
-            (parent.name == processRoot)
+            (parent.name == Constants.PROCESS_ROOT)
         }
         return query.list()
     }
 
-    /*
-    TODO: remove anotation
-    def listChildCategoriesByType(String categoryType) {
+    def listChildProccessCategories(){
         def query = Category.where {
-            (parent != null && type.name == categoryType)
+            (type.applyTo == Constants.PROCESS_APPLY_TO
+             && parent.name != Constants.PROCESS_ROOT
+             && childs.size() == 0 )
         }
         return query.list()
     }
-    */
+    
 
-    def listCategoriesByType(String categoryType) {
+    /*def listCategoriesByType(String categoryType) {
         def query = Category.where {
             (type.name == categoryType)
         }
         return query.list()
-    }
+    }*/
 
     def saveCategory(Category category) {
     	if(category.parent){
-            category.parent.addToChilds(category)
-            category.parent.save flush:true
+            Category parent = category.parent
+            parent.addToChilds(category)
+            parent.save flush:true
     	}
     	category.save flush:true
     }
 
-    def deleteCategory(Category category){
+    def deleteCategory(Category category) {
     	if(category.parent){
-            category.parent.removeFromChilds(category)
+            Category parent = category.parent
+            parent.removeFromChilds(category)
             parent.save flush:true
     	}
     	category.childs?.each {
@@ -60,8 +72,9 @@ class CategoryService {
     def updateCategory(Category category){
     	if(category.isDirty('parent')){ //Checks to see if a domain class instance has been modified.
             if(category.parent){
-            category.parent.addToChilds(category)
-            category.parent.save flush:true
+            Category parent = category.parent    
+            parent.addToChilds(category)
+            parent.save flush:true
             }
             // delete old child of original parent
             Category originalParent = category.getPersistentValue('parent')
