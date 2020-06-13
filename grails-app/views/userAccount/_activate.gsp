@@ -3,7 +3,7 @@
     <div class="header">
         <g:message code="userAccount.activate.label" />
     </div>
-    <div class="content">
+     <div class="content">
         <g:form name="form_activate" class="ui form" action="activate">
             <g:hiddenField name="user" id="userAccount" />
             <div class="field">
@@ -19,17 +19,15 @@
                 <input id="passwordHash2" name="passwordHash2" type="password" required="">
             </div>
         </g:form>
-        <div class="ui small success message">
-            <div class="header">
-                Nota
-            </div>
-            Se informará al usuario de la activación por correo electronico
+          <div class="ui small success message">
+            <div class="header">Nota</div>
+             Se informará al usuario de la activación por correo electronico
         </div>
-    </div>
-    <div class="actions">
-        <div class="ui black deny button">
+        <div class="actions">
+          <div class="ui black deny button">
             <g:message code="default.button.cancel.label" />
-        </div>
-        <input type="submit" form="form_activate" class="ui positive right button" value="${message(code: 'default.button.accept.label')}" />
+          </div>
+          <input type="submit" form="form_activate" class="ui positive right button" value="${message(code: 'default.button.accept.label')}" />
+       </div> 
     </div>
 </div>

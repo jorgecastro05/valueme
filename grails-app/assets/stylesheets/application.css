@@ -238,3 +238,7 @@ h4.category {
     text-align: justify;
     background-color: #fee7c5;
 }
+
+.ui.modal {
+    margin: -20% 0 0 -40%;
+}
