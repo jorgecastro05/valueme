@@ -25,19 +25,15 @@
     </g:if>
     <!-- buttons -->
     <div class="ui stackable grid">
-        <div class="twelve wide column">
-            <h3><g:message code="${entityName}.list.label"/></h3>
-        </div>
-        <div class="four wide column">
-            <g:link class="ui blue fluid button " action="create">
-                <g:message code="default.new.label" />
-            </g:link>
+        <div class="ui column">
+            <h3>
+                <g:message code="${entityName}.list.label" />
+            </h3>
         </div>
     </div>
-    <g:helpLink page="user_management" />
     <!-- search form -->
     <g:form name="myForm" class="ui form" action="search">
-        <div class="three fields">
+        <div class="fields">
             <div class="field">
                 <label>
                     <g:message code="userAccount.email.label" />
@@ -54,7 +50,16 @@
                 <label>
                     &nbsp;
                 </label>
-                <button class="ui blue button" type="submit"><g:message code="default.search.label" /></button>
+                <button class="ui blue button" type="submit">
+                    <g:message code="default.search.label" /></button>
+            </div>
+            <div class="field">
+                <label>
+                    &nbsp;
+                </label>
+                <g:link class="ui blue fluid button " action="create">
+                <g:message code="default.new.label" />
+            </g:link>
             </div>
         </div>
     </g:form>
@@ -62,10 +67,14 @@
         <table class="ui very compact selectable table">
             <thead>
                 <tr>
-                    <g:sortableColumn property="username"  title="${message(code: 'userAccount.username.label')}" params="[userAccount: userAccount, fullName: fullName]" />
-                    <g:sortableColumn property="fullName" title="${message(code: 'userAccount.fullName.label')}" params="[userAccount: userAccount, fullName: fullName]" />
-                    <g:sortableColumn property="category" title="${message(code: 'userAccount.category.label')}" params="[userAccount: userAccount, fullName: fullName]"/>
-                    <g:sortableColumn property="enabled" title="${message(code: 'userAccount.enabled.label')}" params="[userAccount: userAccount, fullName: fullName]" />
+                    <g:sortableColumn property="username" title="${message(code: 'userAccount.username.label')}"
+                        params="[userAccount: userAccount, fullName: fullName]" />
+                    <g:sortableColumn property="fullName" title="${message(code: 'userAccount.fullName.label')}"
+                        params="[userAccount: userAccount, fullName: fullName]" />
+                    <g:sortableColumn property="category" title="${message(code: 'userAccount.category.label')}"
+                        params="[userAccount: userAccount, fullName: fullName]" />
+                    <g:sortableColumn property="enabled" title="${message(code: 'userAccount.enabled.label')}"
+                        params="[userAccount: userAccount, fullName: fullName]" />
                     <th colspan="2">
                         <g:message code="default.options.label" />
                     </th>

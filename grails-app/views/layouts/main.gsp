@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 <head>
     <!-- Standard Meta -->
     <meta charset="utf-8" />

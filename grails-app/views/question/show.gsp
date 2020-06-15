@@ -21,9 +21,12 @@
     </g:if>
     <!-- buttons -->
 
-        <g:link class="ui blue fluid button " action="index">
-            <g:message code="default.list.label" args="[entityName]" /></g:link>
-    <h3><g:message code="default.show.label" args="[entityName]" /></h3>
+    <g:link class="ui blue fluid button " action="index">
+        <g:message code="default.list.label" args="[entityName]" />
+    </g:link>
+    <h3>
+        <g:message code="default.show.label" args="[entityName]" />
+    </h3>
     <!-- form -->
     <div id="show-question" class="content scaffold-show" role="main">
         <div class="ui list celled">
@@ -51,7 +54,7 @@
                 <div class="header">
                     <g:message code="question.surveys" />
                 </div>
-                 ${valueme.Survey.findAll(question: question.id ,{questions}).category.name}
+                ${valueme.Survey.findAll(question: question.id ,{questions}).category.name}
             </div>
 
             <div class="item">
@@ -59,7 +62,7 @@
                     <g:message code="question.category.label" />
                 </div>
                 <ol lass="ui list">
-                <g:set var="edit" value="${true}" />
+                    <g:set var="edit" value="${false}" />
                     <g:each var="category" in="${categories}">
                         <li>
                             <div class="category" style="color: ${category.color};">
@@ -74,8 +77,11 @@
         <g:form resource="${this.question}" method="DELETE">
             <div class="ui two buttons">
                 <g:link class="ui blue fluid button " action="edit" resource="${this.question}">
-                    <g:message code="default.button.edit.label" default="Edit" /></g:link>
-                <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+                    <g:message code="default.button.edit.label" default="Edit" />
+                </g:link>
+                <input class="ui blue fluid button " type="submit"
+                    value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </div>
         </g:form>
     </div>

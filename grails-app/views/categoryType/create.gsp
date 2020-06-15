@@ -23,8 +23,10 @@
         <div class="ui error message">
             <i class="close icon"></i>
             <g:eachError bean="${this.categoryType}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"
+                    </g:if>>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <g:message error="${error}" />
                 </li>
             </g:eachError>
@@ -32,8 +34,11 @@
     </g:hasErrors>
     <!-- buttons -->
     <g:link class="ui blue fluid button " action="index">
-        <g:message code="default.list.label" args="[entityName]" /></g:link>
-    <h3><g:message code="default.create.label" args="[entityName]" /></h3>
+        <g:message code="default.list.label" args="[entityName]" />
+    </g:link>
+    <h3>
+        <g:message code="default.create.label" args="[entityName]" />
+    </h3>
     <!-- form -->
     <div id="create-categoryType">
         <g:form action="save" class="ui form" role="form">
@@ -41,9 +46,16 @@
                 <label>
                     <g:message code="categoryType.name.label" />
                 </label>
-                <f:input bean="categoryType" property="name"/>
+                <f:input bean="categoryType" property="name" />
             </div>
-            <g:submitButton name="create" class="ui blue fluid button " value="${message(code: 'default.button.create.label', default: 'Create')}" />
+            <div class="field">
+                <label>
+                    <g:message code="categoryType.meta.label" />
+                </label>
+                <f:input class="ui dropdown" bean="categoryType" property="applyTo" />
+            </div>
+            <g:submitButton name="create" class="ui blue fluid button "
+                value="${message(code: 'default.button.create.label', default: 'Create')}" />
         </g:form>
 </body>
 

@@ -36,8 +36,11 @@ management:
     endpoints:
         enabled-by-default: false
 server:
-   session:
-      timeout: 7200  #seconds
+  session:
+    timeout: 7200  #seconds
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,application/javascript
 
 ---
 grails:
