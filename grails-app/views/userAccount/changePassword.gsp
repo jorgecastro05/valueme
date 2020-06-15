@@ -13,6 +13,11 @@
         <i class="close icon"></i> ${flash.message}
     </div>
 </g:if>
+<g:if test="${flash.error}">
+        <div class="ui negative message">
+            <i class="close icon"></i> ${flash.error}
+        </div>
+</g:if>
 <g:hasErrors bean="${this.userAccount}">
     <div class="ui error message">
         <i class="close icon"></i>
@@ -36,13 +41,13 @@
             <g:message code="userAccount.password.label" />
             <g:help message="help.userAccount.password.new" />
         </label>
-        <f:input bean="userAccount" property="password" type="password" />
+        <input id="password" name="password" type="password">
     </div>
     <div class="field">
         <label>
             <g:message code="userAccount.passwordRetype.label" />
         </label>
-        <input id="password2" name="password2" type="password">
+        <input id="passwordRetype" name="passwordRetype" type="password">
     </div>
     <div class="error"></div>
     <div class="ui error message"></div>

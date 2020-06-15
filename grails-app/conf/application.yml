@@ -35,6 +35,9 @@ spring:
 management:
     endpoints:
         enabled-by-default: false
+server:
+   session:
+      timeout: 7200  #seconds
 
 ---
 grails:

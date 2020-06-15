@@ -19,17 +19,17 @@
     <g:applyLayout name="score"/>
 </sec:access>
 <div class="right menu">
+    <form name="logout" method="POST" action="${createLink(controller:'logout')}">
     <sec:ifLoggedIn>
         <div class="ui simple dropdown item">
             <sec:username/>
             <div class="menu">
-                <form class="ui form" name="logout" method="POST" action="${createLink(controller:'logout')}">
-                    <g:link class="ui item fluid basic button" controller="userAccount" action="show" params="[userAccount: sec.loggedInUserInfo(field:'id')]">
+                    <g:link class="item" controller="userAccount" action="show" params="[userAccount: sec.loggedInUserInfo(field:'id')]">
                         <g:message code="userAccount.myAccount.label"/>
                     </g:link>
                     <input type="submit" value="salir" class="ui item fluid basic button"/>
-                </form>
             </div>
         </div>
     </sec:ifLoggedIn>
+    </form>
 </div>

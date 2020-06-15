@@ -64,16 +64,15 @@ class UserAccountController {
             return
         }
 
-        userAccount.roles = [params.selRoles].flatten()
-        def pw = userAccount.passwordHash
         userAccount.save flush:true
-
-        // secure that email is send after successfully save userAccount
-        //userAccountService.sendMail([email: userAccount.email, password: pw],'create')
+        for(String roleId: params.selectedRoles){
+            RoleGroup roleGroup = RoleGroup.get(roleId.toInteger())
+            UserAccountRoleGroup.create userAccount, roleGroup
+        }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.userAccount])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.username])
                 redirect userAccount
             }
                     '*' { respond userAccount, [status: CREATED] }
@@ -88,7 +87,6 @@ class UserAccountController {
     @Secured(['ROLE_realizar evaluación','ROLE_gestion usuarios'])
     @Transactional
     def update(UserAccount userAccount) {
-        def pw = null
         if (userAccount == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -102,26 +100,36 @@ class UserAccountController {
         }
 
         if(params.editPassword){
-            if(userAccount.passwordHash != params.passwordHash2){
-                userAccount.errors.rejectValue('passwordHash','userAccount.passwordHash.notMatch')
+            if(params.password != params.passwordRetype){
+                userAccount.errors.rejectValue('password','userAccount.password.notMatch')
+                flash.error = message(code: 'userAccount.password.notMatch')
                 respond userAccount.errors, view:'changePassword'
                 return
+            }else {
+                userAccount.password = params.password
             }
-            pw = userAccount.passwordHash
         }
 
-        userAccount.roles = [params.selRoles].flatten()
         userAccount.save flush:true
+        //Clean all prevous roles
+        UserAccountRoleGroup.removeAll(userAccount)
+        //Create new roles
+        for(String roleId: params.selectedRoles) {
+            if(!UserAccountRoleGroup.exists(userAccount.id, roleId.toInteger())) {
+                RoleGroup roleGroup = RoleGroup.get(roleId.toInteger())
+                UserAccountRoleGroup.create userAccount, roleGroup
+            }
+        }
 
         // enviar correo unicamente si se editó la contraseña
         if(params.editPassword){
-            userAccountService.sendMail([email: userAccount.userAccount, password: pw],'details')
+            userAccountService.sendMail([email: userAccount.username, password: params.passwordRetype],'details')
         }
 
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.userAccount])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.username])
                 redirect userAccount
             }
                     '*'{ respond userAccount, [status: OK] }
@@ -141,7 +149,7 @@ class UserAccountController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.userAccount])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.username])
                 redirect action:"index", method:"GET"
             }
                     '*'{ render status: NO_CONTENT }
@@ -173,10 +181,10 @@ class UserAccountController {
     def resetPassword(String userAccount){
         UserAccount user = UserAccount.findByUserAccount(userAccount)
         if(user){
-            def pw = RandomStringUtils.randomAlphanumeric(12)
-            user.passwordHash = pw
+            def newPassword = RandomStringUtils.randomAlphanumeric(12)
+            user.password = newPassword
             user.save flush: true
-            userAccountService.sendMail([email: user.userAccount, password: pw],'pwChanged')
+            userAccountService.sendMail([email: user.userAccount, password: newPassword],'pwChanged')
             request.withFormat {
                 form multipartForm {
                     flash.success = message(code: 'userAccount.forgetPassword.success.message')
@@ -204,36 +212,28 @@ class UserAccountController {
      * @param  String passwordHash2 confirm password
      * @return        url indicates success or fail operation
      */
-    def activate(String user, String passwordHash, String passwordHash2){
-        UserAccount userAccount = UserAccount.get(user)
-        userAccount.passwordHash = passwordHash
-        userAccount.active = true
-        def pw = null
-        if(userAccount.passwordHash != params.passwordHash2){
-            flash.error = message(code: 'userAccount.passwordHash.notMatch')
+    def activate(String user, String password, String passwordRetype){
+        
+        if(password != passwordRetype){
+            flash.error = message(code: 'userAccount.password.notMatch')
             redirect action: "index" , method:"GET"
             return
         }
-        pw = userAccount.passwordHash
 
+        UserAccount userAccount = UserAccount.get(user)
+        userAccount.password = password
+        userAccount.enabled = true
         userAccount.save flush:true
+        
         // enviar correo
-        userAccountService.sendMail([email: userAccount.userAccount, password: pw],'details')
+        userAccountService.sendMail([email: userAccount.username, password: password],'details')
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.userAccount])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'userAccount.label', default: 'UserAccount'), userAccount.username])
                 redirect action:"index", method:"GET"
             }
                     '*'{ respond userAccount, [status: OK] }
         }
-    }
-
-    /* Permite obtener las categorias dado el id del padre
-     */
-    def getCategories(String parent){
-        def categories = Category.findAllByParent(parent)
-        categories.size() // force mapping of all objects
-        respond categories, formats: ['json']
     }
 }
