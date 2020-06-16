@@ -16,7 +16,12 @@ class Category {
 	static hasMany = [childs: Category]
 
 	static constraints = {
-		parent nullable: true
+		parent validator: { Category val, Category obj -> 
+		if ( val == null && obj.type.name != Constants.ROOT_CATEGORY ) {
+			return ['parent.required']
+			}
+		}
+
 		name index: true, unique: 'type'
 		type index: true
 		description nullable: true

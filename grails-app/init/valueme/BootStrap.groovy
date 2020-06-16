@@ -40,9 +40,6 @@ class BootStrap {
         UserAccountRoleGroup.create userAdmin, administrador
 
         //create parameters
-        new Param(name: 'account.categoryType', description: 'tipo de categoria asociada a una cuenta', value: 'Proceso', label: 'Procesos').save(failOnError: true)
-        new Param(name: 'survey.categoryType', description: 'tipo de categoria asociada a una encuesta', value: 'Proceso', label: 'Procesos').save(failOnError: true)
-        new Param(name: 'question.categoryType', description: 'tipo de categoria raiz del conjunto de preguntas', value: 'Módulo', label: 'Módulos').save(failOnError: true)
         new Param(name: 'mail.username', description: 'nombre de correo electronico de envio').save(failOnError: true)
         new Param(name: 'mail.password', description: 'contraseña de correo electronico de envio').save(failOnError: true)
         new Param(name: 'mail.active', description: 'habilitar envio de correo electronico en la creación o modificación de cuentas de usuario', value: false).save(failOnError: true)
@@ -169,22 +166,22 @@ class BootStrap {
             ]
 
         def questions = []
-            questions.add(new Question(text: questionsText[0], category: Category.findByName("Talento Humano").childs[0], active: true))
-            questions.add(new Question(text: questionsText[1], category: Category.findByName("Talento Humano").childs[1], active: true))
-            questions.add(new Question(text: questionsText[2], category: Category.findByName("Talento Humano").childs[1], active: true))
-            questions.add(new Question(text: questionsText[3], category: Category.findByName("Direccionamiento Estratégico").childs[0], active: true))
-            questions.add(new Question(text: questionsText[4], category: Category.findByName("Direccionamiento Estratégico").childs[1], active: true))
-            questions.add(new Question(text: questionsText[5], category: Category.findByName("Direccionamiento Estratégico").childs[2], active: true))
-            questions.add(new Question(text: questionsText[6], category: Category.findByName("Direccionamiento Estratégico").childs[3], active: true))
-            questions.add(new Question(text: questionsText[7], category: Category.findByName("Direccionamiento Estratégico").childs[4], active: true))
-            questions.add(new Question(text: questionsText[8], category: Category.findByName("Administración del Riesgo").childs[0], active: true))
-            questions.add(new Question(text: questionsText[9], category: Category.findByName("Administración del Riesgo").childs[1], active: true))
-            questions.add(new Question(text: questionsText[10], category: Category.findByName("Administración del Riesgo").childs[2], active: true))
-            questions.add(new Question(text: questionsText[11], category: Category.findByName("Administración del Riesgo").childs[2], active: true))
-            questions.add(new Question(text: questionsText[12], category: Category.findByName("Autoevaluación del Control y Gestión"), active: true))
-            questions.add(new Question(text: questionsText[13], category: Category.findByName("Plan de Mejoramiento"), active: true))
+            questions.add(new Question(text: questionsText[0], category: Category.findByName("Talento Humano").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[1], category: Category.findByName("Talento Humano").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[2], category: Category.findByName("Talento Humano").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[3], category: Category.findByName("Direccionamiento Estratégico").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[4], category: Category.findByName("Direccionamiento Estratégico").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[5], category: Category.findByName("Direccionamiento Estratégico").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[6], category: Category.findByName("Direccionamiento Estratégico").childs[3], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[7], category: Category.findByName("Direccionamiento Estratégico").childs[4], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[8], category: Category.findByName("Administración del Riesgo").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[9], category: Category.findByName("Administración del Riesgo").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[10], category: Category.findByName("Administración del Riesgo").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[11], category: Category.findByName("Administración del Riesgo").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[12], category: Category.findByName("Autoevaluación del Control y Gestión"), active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[13], category: Category.findByName("Plan de Mejoramiento"), active: true).save(failOnError: true, flush: true))
                 
-        Survey survey = new Survey(questions: questions, vigency: 2020, category: Category.findByName("Área de Servicios")).save(failOnError: true)
+        Survey survey = new Survey(questions: questions, vigency: 2020, category: Category.findByName("Área de Servicios")).save(failOnError: true, flush: true)
         Schedule schedule = new Schedule(startDate: '01/01/2020', endDate: '31/12/2020', vigency: 2020, active: true).save(failOnError: true)
 
         UserAccount user = new UserAccount( fullName : "user", password : "1", username : "user@valueme.com", category: Category.findByName("Área de Servicios")).save(failOnError: true)
@@ -210,7 +207,7 @@ class BootStrap {
 
         Assessment assessment = new Assessment(userAccount: user, vigency: 2020, finished: true, category: Category.findByName("Área de Servicios"), answers: answers, survey: survey )
 
-        assessment.save(failOnError: true)
+        assessment.save(failOnError: true, flush: true)
 
         log.info "Finished bootstraping application"
     }

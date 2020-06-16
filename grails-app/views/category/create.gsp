@@ -78,7 +78,7 @@
                 <label>
                     <g:message code="category.parent.label" />
                 </label>
-                <g:select class="ui fluid search four column dropdown" name="parent" value="${category.parent}" noSelection="${['null': '']}" from='${categories}' optionKey="id" optionValue="name"></g:select>
+                <g:select class="ui fluid search four column dropdown" required="true" name="parent" value="${category.parent}" noSelection="${['null': '']}" from='${categories}' optionKey="id" optionValue="name"></g:select>
             </div>
             <g:submitButton name="create" class="ui blue fluid button " value="${message(code: 'default.button.create.label', default: 'Create')}" />
         </g:form>

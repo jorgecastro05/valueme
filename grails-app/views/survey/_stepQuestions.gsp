@@ -5,25 +5,19 @@
             <div class="category" style="color: ${child.color}">
                 ${child.type.name} ${child.name}
             </div>
-
-            <g:if test="${edit}">
-                  <g:set var="questions" value="${valueme.Question.findAllByCategoryAndActive(child, true)}" />
-            </g:if>
-            <g:else>
-                <g:set var="questions" value="${survey.questions.findAll{it?.category?.id == child.id && active == true}}" />
-            </g:else>
-
-            <g:each var="question" in="${questions}" <div class="ui form">
-                <div class="grouped fields">
-                    <div class="field">
-                        <div class="ui checkbox">
-                            <g:checkBox name="survey.questions" value="${question.id}" checked="${survey.questions?.id?.contains(question.id)}" readonly="${!edit}" />
-                            <label>${question.text}</label>
+            <g:each var="question" in="${questions.findAll{it.category == child}}">
+                <div class="ui form">
+                    <div class="grouped fields">
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <g:checkBox name="survey.questions" value="${question.id}"
+                                    checked="${survey.questions?.contains(question)}" readonly="${!edit}" />
+                                <label>${question.text}</label>
+                            </div>
                         </div>
                     </div>
-                </div>
             </g:each>
-            <g:render template="stepQuestions" model="${[category: child]}" />
+            <g:render template="stepQuestions" model="${[category: child, questions: questions]}" />
         </li>
     </g:each>
 </ol>

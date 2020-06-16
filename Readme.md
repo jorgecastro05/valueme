@@ -14,8 +14,8 @@
 - Parametros de Evaluación
   - Reasign parent category in edition not working
   - Root categories dont apear in creation ok
-  - Parent caregory must be required in creation
-  - Remove configuration params unused
+  - Parent caregory must be required in creation ok
+  - Remove configuration params unused ok
 - Evaluación
   - Survey show not showing questions.
   - Survey edit not working.

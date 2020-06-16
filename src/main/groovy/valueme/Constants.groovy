@@ -6,4 +6,5 @@ class Constants {
     static final ROOT_APPLY_TO = 'root'
     static final MECI_APPLY_TO = 'meci'
     static final PROCESS_APPLY_TO = 'process'
+    static final ROOT_CATEGORY = 'ROOT'
 }

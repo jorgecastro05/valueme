@@ -37,12 +37,14 @@ class SurveyController {
 
     def show(Survey survey) {
         respond survey, 
-            model:[categoriesQuestions: categoryService.listRootMeciCategories(), categoriesSurveys: categoryService.listChildProccessCategories()]
+            model:[categoriesQuestions: categoryService.listRootMeciCategories(), categoriesSurveys: categoryService.listChildProccessCategories(), 
+            questions: survey.questions, edit: false]
     }
 
     def create() {
         respond new Survey(params), 
-            model: [categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories()]
+            model: [categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories(), 
+            questions: Question.findAllByActive(true), edit: true]
     }
 
     @Transactional
@@ -87,9 +89,8 @@ class SurveyController {
             return
         }
 
-        log.info Survey.findByCategoryAndVigency(survey.category, survey.vigency)
         if(Survey.findByCategoryAndVigency(survey.category, survey.vigency) != null){
-            log.warn "WARNING: Category ALREADY FOUND"
+            log.warn "Category ALREADY FOUND"
             transactionStatus.setRollbackOnly()
             respond survey.errors, view:'index'
         }

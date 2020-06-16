@@ -54,7 +54,6 @@
             <g:select class="ui search dropdown" optionKey="id" optionValue="name" from="${categoryTypes}" name="survey.category"/>
         </div>
         <!-- List of questions -->
-        <g:set var="edit" value="${true}"/>
         <div class="field" ng-controller="survey">
             <label>
                 <g:message code="survey.questions.label"/>
@@ -70,7 +69,7 @@
                                 </li>
                             </div>
                             <div class="content">
-                                <g:render template="stepQuestions" model="${[category: category]}"/>
+                                <g:render template="stepQuestions" model="${[category: category, questions: questions]}"/>
                             </div>
                         </div>
                     </g:each>
