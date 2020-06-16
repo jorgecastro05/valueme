@@ -50,7 +50,7 @@
                     <!-- List of questions -->
                     <g:set var="edit" value="${false}"/>
                     <ol lass="ui list">
-                        <g:each in="${categories}" var="category">
+                        <g:each in="${categoriesQuestions}" var="category">
                             <li class="category" style="color: ${category.color};">
                                 ${category.type.name} ${category.name}
                             </li>

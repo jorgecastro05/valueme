@@ -14,7 +14,7 @@ class ScoreController {
     }
 
     def indexCompareScore() {
-        render view: 'compareScore', model: [categoryTypes: categoryTypeService.listMeciCategoyTypes()]
+        render view: 'compareScore', model: [categoryTypes: categoryTypeService.listMeciCategoyTypes(), categories: categoryService.listChildProccessCategories()]
     }
 
     def indexIndividualScore() {
@@ -38,7 +38,7 @@ class ScoreController {
             }
         def categoryTypeSearch = Param.findByName('survey.categoryType')?.value    
         respond scoreService.getScore(categoryA, params.categoryB, vigency, categoryType), 
-                model:[categories: categoryService.listRootMeciCategories(), 
+                model:[categories: categoryService.listChildProccessCategories(), 
                 categoryTypes: categoryTypeService.listMeciCategoyTypes()]
         }
     }

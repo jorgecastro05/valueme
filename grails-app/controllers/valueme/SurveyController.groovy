@@ -37,7 +37,7 @@ class SurveyController {
 
     def show(Survey survey) {
         respond survey, 
-            model:[categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories()]
+            model:[categoriesQuestions: categoryService.listRootMeciCategories(), categoriesSurveys: categoryService.listChildProccessCategories()]
     }
 
     def create() {
@@ -46,7 +46,7 @@ class SurveyController {
     }
 
     @Transactional
-    def save(Question question, int vigency){  //TODO: validate
+    def save(Question question, int vigency){
 
         if (question == null) {
             transactionStatus.setRollbackOnly()
@@ -87,9 +87,9 @@ class SurveyController {
             return
         }
 
-        println Survey.findByCategoryAndVigency(survey.category, survey.vigency)
+        log.info Survey.findByCategoryAndVigency(survey.category, survey.vigency)
         if(Survey.findByCategoryAndVigency(survey.category, survey.vigency) != null){
-            println "WARNING: Category ALREADY FOUND"
+            log.warn "WARNING: Category ALREADY FOUND"
             transactionStatus.setRollbackOnly()
             respond survey.errors, view:'index'
         }
@@ -108,8 +108,8 @@ class SurveyController {
     def edit(Survey survey) {
         def categoryTypeQuestions = Param.findByName('question.categoryType')?.value
         def categoryTypeSurveys = Param.findByName('survey.categoryType')?.value
-        respond survey, model:[categoriesQuestions: categoryService.listCategoriesByType(categoryTypeQuestions), 
-                               categoriesSurveys: categoryService.listCategoriesByType(categoryTypeSurveys) ]
+        respond survey, model:[categoriesQuestions: categoryService.listRootMeciCategories(), 
+                               categoriesSurveys: categoryService.listChildProccessCategories() ]
     }
 
     @Transactional

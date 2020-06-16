@@ -7,7 +7,7 @@
 //
 // los javascripts a continuación se llaman en orden, en ultimo lugar se ejecuta este archivo
 //
-//= require jquery-2.2.0.min
+//= require jquery.min.js
 //= require angular.min.js
 //= require angular-resource.min.js
 //= require angular-route.min.js
@@ -91,7 +91,10 @@ $('#rangeend').calendar({
 
 // calendar selector year
 $('#yearDate, .yearDate').calendar({
-    type: 'year'
+    type: 'year',
+    disableMonth: true,
+    disableMinute: true,
+    formatInput: false
 });
 
 // show modal for copy surveys by vigency

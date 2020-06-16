@@ -11,14 +11,14 @@ class CategoryService {
 
     def listMeciCategories(){
         def query = Category.where {
-            (type.applyTo == Constants.MECI_APPLY_TO)
+            (type.applyTo == Constants.MECI_APPLY_TO || name == Constants.MECI_ROOT)
         }
         return query.list()
     }
 
     def listProcessCategories(){
         def query = Category.where {
-            (type.applyTo == Constants.PROCESS_APPLY_TO)
+            (type.applyTo == Constants.PROCESS_APPLY_TO || name == Constants.PROCESS_ROOT)
         }
         return query.list()
     }
