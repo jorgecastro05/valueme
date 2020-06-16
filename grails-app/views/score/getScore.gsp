@@ -66,7 +66,7 @@
                   <ol>
                       <g:each in="${categories}" var="category">
                           <li class="category" style="color: ${category.color};">
-                              ${category.type} ${category.name}
+                            ${category.name}
                           </li>
                           <g:render template="step" model="${[category: category]}"/>
                       </g:each>

@@ -10,13 +10,13 @@
                 <label>
                     <g:message code="userAccount.passwordHash.label" />
                 </label>
-                <input id="passwordHash" name="passwordHash" type="password" required="">
+                <input id="password" name="password" type="password" required="">
             </div>
             <div class="field">
                 <label>
                     <g:message code="userAccount.passwordHashRetype.label" />
                 </label>
-                <input id="passwordHash2" name="passwordHash2" type="password" required="">
+                <input id="passwordRetype" name="passwordRetype" type="password" required="">
             </div>
         </g:form>
           <div class="ui small success message">

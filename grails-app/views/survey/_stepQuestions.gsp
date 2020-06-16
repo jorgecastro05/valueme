@@ -6,11 +6,11 @@
                 ${child.type.name} ${child.name}
             </div>
 
-            <g:if test="${edit == true}">
-                  <g:set var="questions" value="${valueme.Question.findAllByCategory(child)}" />
+            <g:if test="${edit}">
+                  <g:set var="questions" value="${valueme.Question.findAllByCategoryAndActive(child, true)}" />
             </g:if>
             <g:else>
-                <g:set var="questions" value="${survey.questions.findAll{it?.category?.id == child.id}}" />
+                <g:set var="questions" value="${survey.questions.findAll{it?.category?.id == child.id && active == true}}" />
             </g:else>
 
             <g:each var="question" in="${questions}" <div class="ui form">

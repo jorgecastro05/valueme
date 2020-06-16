@@ -90,7 +90,7 @@ class QuestionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'question.label', default: 'Question'), question.question])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'question.label', default: 'Question'), question.text])
                 redirect question
             }
             '*'{ respond question, [status: OK] }

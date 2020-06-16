@@ -37,11 +37,11 @@
     <h3><g:message code="default.create.label" args="[entityName]" /></h3>
     <!-- form -->
     <div id="create-question" class="content scaffold-create" role="main">
-        <g:form resource="${this.question}" method="PUT" class="ui form" role="form">
+        <g:form resource="${this.question}" method="POST" class="ui form" role="form">
             <g:hiddenField name="version" value="${this.question?.version}" />
             <div class="field">
                 <label>
-                    <g:message code="question.question.label" />
+                    <g:message code="question.text.label" />
                 </label>
                 <f:input bean="question" property="text" />
             </div>
@@ -58,7 +58,7 @@
                     <g:message code="question.category.label" />
                 </label>
                 <ol lass="ui list">
-                <g:set var="create" value="${true}" />
+                <g:set var="edit" value="${true}" />
                     <g:each var="category" in="${categories}">
                         <li>
                             <div class="category" style="color: ${category.color};">
@@ -69,7 +69,7 @@
                     </g:each>
                 </ol>
             </div>
-            <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+            <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.create.label', default: 'Create')}" />
         </g:form>
 </body>
 

@@ -85,7 +85,7 @@
                     <label>
                         <g:message code="userAccount.roles.label" />
                     </label>
-                    <g:select class="ui search dropdown" optionKey="id" optionValue="name" multiple="true" name="selRoles" from="${roles}" value="${name}" />
+                    <g:select class="ui search dropdown" optionKey="id" optionValue="name" multiple="true" name="selectedRoles" from="${roles}" />
                 </div>
                 <g:submitButton name="create" class="ui blue fluid button " value="${message(code: 'default.button.create.label', default: 'Create')}" />
             </g:form>
