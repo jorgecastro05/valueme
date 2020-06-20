@@ -70,17 +70,17 @@ class CategoryService {
     }
 
     def updateCategory(Category category){
-    	if(category.isDirty('parent')){ //Checks to see if a domain class instance has been modified.
-            if(category.parent){
-            Category parent = category.parent    
-            parent.addToChilds(category)
-            parent.save flush:true
+    	if(category.isDirty('parent')){ //if parent has changed
+            log.info 'parent has changed for category ' + category
+            Category initialParent = category.getPersistentValue('parent')
+            Category newParent = category.parent
+            log.info 'the initialParent is ' + initialParent
+            log.info 'the newParent is ' + newParent
+            if(initialParent){
+                initialParent.removeFromChilds(category)
             }
-            // delete old child of original parent
-            Category originalParent = category.getPersistentValue('parent')
-            if(originalParent){
-            originalParent.removeFromChilds(category)
-    		originalParent.save flush:true
+            if(newParent){
+            newParent.addToChilds(category)
             }
         }
         category.save flush:true

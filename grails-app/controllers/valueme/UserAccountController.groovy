@@ -25,7 +25,7 @@ class UserAccountController {
     Realiza paginacion y ordenación de los elementos.
      */
     def search(Integer max){
-        DetachedCriteria<UserAccount> query = UserAccount.where {
+        def query = UserAccount.where {
             username =~ '%' + params.username + '%'
             fullName =~ '%' + params.fullName + '%'
         }
@@ -35,7 +35,7 @@ class UserAccountController {
             userAccount: params.userAccount,
             fullName: params.fullName,
             userAccountCount: userAccountList.getTotalCount()]
-    }
+    } 
 
     @Secured(['ROLE_realizar evaluación','ROLE_gestion usuarios'])
     def show(UserAccount userAccount) {

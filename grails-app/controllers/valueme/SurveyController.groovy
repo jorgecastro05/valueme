@@ -107,10 +107,8 @@ class SurveyController {
     }
 
     def edit(Survey survey) {
-        def categoryTypeQuestions = Param.findByName('question.categoryType')?.value
-        def categoryTypeSurveys = Param.findByName('survey.categoryType')?.value
-        respond survey, model:[categoriesQuestions: categoryService.listRootMeciCategories(), 
-                               categoriesSurveys: categoryService.listChildProccessCategories() ]
+        respond survey, model:[categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories(), 
+            questions: Question.findAllByActive(true), edit: true ]
     }
 
     @Transactional

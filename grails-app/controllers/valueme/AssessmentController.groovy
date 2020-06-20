@@ -11,8 +11,6 @@ import grails.gorm.*
 class AssessmentController {
 
     def springSecurityService
-    def categoryTypeSurvey = Param.findByName("survey.categoryType").value //process
-    def categoryTypeQuestion = Param.findByName("question.categoryType").value //meci
     def categoryService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]

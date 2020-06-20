@@ -38,7 +38,7 @@
                 <label>
                     <g:message code="userAccount.email.label" />
                 </label>
-                <input type="text" name="userAccount" value="${username}">
+                <input type="text" name="username" value="${username}">
             </div>
             <div class="field">
                 <label>

@@ -33,9 +33,9 @@
         <!-- buttons -->
         <div class="text-center">
             <div class="ui two buttons">
-                <g:link class="ui  button " action="index">
+                <g:link class="ui blue button " action="index">
                     <g:message code="default.list.label" args="[entityName]" /></g:link>
-                <g:link class="ui  button " action="create">
+                <g:link class="ui blue button " action="create">
                     <g:message code="default.new.label" args="[entityName]" /></g:link>
             </div>
         </div>
@@ -71,16 +71,14 @@
                             ${userAccount.category?.name}
                         </div>
                     </label>
-                    <div class="ui horizontal accordion menu">
+                    <div class="ui styled fluid accordion">
                         <g:each in="${categories}" var="category">
-                            <div class="item">
                                 <div class="title">
                                     <i class="dropdown icon"></i> ${category.name}
                                 </div>
                                 <div class="content">
                                     <g:render template="step" model="${[category: category]}" />
                                 </div>
-                            </div>
                         </g:each>
                     </div>
                 </div>
