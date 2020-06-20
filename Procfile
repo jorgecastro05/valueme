@@ -1,1 +1,1 @@
-web:java -Dserver.port=$PORT $JAVA_OPTS -Dgrails.env=prod -jar build/libs/*.jar
+web:export SERVER_PORT=$PORT; java $JAVA_OPTS -jar build/libs/*.jar
