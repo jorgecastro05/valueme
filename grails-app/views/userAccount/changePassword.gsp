@@ -13,6 +13,11 @@
         <i class="close icon"></i> ${flash.message}
     </div>
 </g:if>
+<g:if test="${flash.error}">
+        <div class="ui negative message">
+            <i class="close icon"></i> ${flash.error}
+        </div>
+</g:if>
 <g:hasErrors bean="${this.userAccount}">
     <div class="ui error message">
         <i class="close icon"></i>
@@ -33,21 +38,20 @@
     <g:hiddenField name="editPassword" value="true" />
     <div class="field">
         <label>
-            <g:message code="userAccount.passwordHash.label" />
+            <g:message code="userAccount.password.label" />
             <g:help message="help.userAccount.password.new" />
         </label>
-        <f:input bean="userAccount" property="passwordHash" type="password" />
+        <input id="password" name="password" type="password">
     </div>
     <div class="field">
         <label>
-            <g:message code="userAccount.passwordHashRetype.label" />
+            <g:message code="userAccount.passwordRetype.label" />
         </label>
-        <input id="passwordHash2" name="passwordHash2" type="password">
+        <input id="passwordRetype" name="passwordRetype" type="password">
     </div>
     <div class="error"></div>
     <div class="ui error message"></div>
     <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-    <g:select class="hidden-field" multiple="true" name="selRoles" from="${userAccount.roles}" value="${userAccount.roles}" />
 </g:form>
 </body>
 

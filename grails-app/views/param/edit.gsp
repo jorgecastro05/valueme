@@ -45,7 +45,7 @@
                 <label>
                     <g:message code="param.name.label" />
                 </label>
-                <f:input bean="param" property="name" />
+                ${param.name}
             </div>
             <div class="field">
                 <label>

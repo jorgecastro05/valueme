@@ -36,13 +36,13 @@
                 <div class="header">
                     <g:message code="userAccount.label" />
                 </div>
-                ${userAccount.userAccount}
+                ${userAccount.username}
             </div>
             <div class="item">
                 <div class="header">
                     <g:message code="userAccount.roles.label" />
                 </div>
-                ${userAccount.roles.join(',')}
+                ${userAccount.getAuthorities().name}
             </div>
             <div class="item">
                 <div class="header">
@@ -52,27 +52,15 @@
             </div>
             <div class="item">
                 <div class="header">
-                    <g:message code="userAccount.active.label" />
+                    <g:message code="userAccount.enabled.label" />
                 </div>
-                <g:formatBoolean boolean="${userAccount.active}" />
-            </div>
-            <div class="item">
-                <div class="header">
-                    <g:message code="userAccount.vigencyStart.label" />
-                </div>
-                ${userAccount.vigencyStart}
-            </div>
-            <div class="item">
-                <div class="header">
-                    <g:message code="userAccount.vigencyEnd.label" />
-                </div>
-                ${userAccount.vigencyEnd}
+                <g:formatBoolean boolean="${userAccount.enabled}" />
             </div>
             <div class="item">
                 <div class="header">
                     <g:message code="category.label" />
                 </div>
-                ${userAccount.category?.category}
+                ${userAccount.category?.name}
             </div>
         </div>
         <g:form resource="${this.userAccount}" method="DELETE">

@@ -9,14 +9,14 @@
                 <label>
                     <g:message code="survey.beforevigency.label" />
                 </label>
-                <g:set var="year" value="${new Date()}"/>
-               <g:select name="beforeVigency" from="${year[Calendar.YEAR]-1..(year[Calendar.YEAR]+3)}" class="ui dropdown" />
+                <g:set var="year" value="${java.time.LocalDate.now().getYear()}"/>
+               <g:select name="beforeVigency" from="${year-3..year+3}" class="ui dropdown" />
             </div>
             <div class="field">
                 <label>
                     <g:message code="survey.aftervigency.label" />
                 </label>
-                <g:select name="afterVigency" from="${year[Calendar.YEAR]..(year[Calendar.YEAR]+3)}" class="ui dropdown" />
+                <g:select name="afterVigency" from="${year-3..year+3}" class="ui dropdown" />
             </div>
         </g:form>
         <div class="ui small warning message">

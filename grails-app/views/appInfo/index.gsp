@@ -12,7 +12,7 @@
             <tbody>
                 <tr>
                     <td>
-                        Version
+                        Application version
                     </td>
                     <td>
                         <g:meta name="info.app.version" />
@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Built with Grails
+                        Grails Version
                     </td>
                     <td>
                         <g:meta name="info.app.grailsVersion" />
@@ -32,12 +32,10 @@
                     </td>
                     <td>
                     <g:if env="development">
-                    	<g:meta name="environments.development.grails.mongodb.databaseName" /> on
-                    	<g:meta name="environments.development.grails.mongodb.host" />
+                    	<g:meta name="environments.development" />
                     </g:if>
 					<g:if env="production">
-                    	<g:meta name="environments.production.grails.mongodb.databaseName" /> on
-                    	<g:meta name="environments.production.grails.mongodb.host" />
+                    	<g:meta name="environments.production" />
                     </g:if>
                     </td>
                 </tr>

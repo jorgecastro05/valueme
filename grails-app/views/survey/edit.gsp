@@ -23,7 +23,8 @@
         <div class="ui error message">
             <i class="close icon"></i>
             <g:eachError bean="${this.survey}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
+                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"
+                    </g:if>>
                     <g:message error="${error}" />
                 </li>
             </g:eachError>
@@ -32,11 +33,15 @@
     <!-- buttons -->
     <div class="ui two buttons">
         <g:link class="ui blue fluid button " action="index">
-            <g:message code="default.list.label" args="[entityName]" /></g:link>
+            <g:message code="default.list.label" args="[entityName]" />
+        </g:link>
         <g:link class="ui blue fluid button " action="create">
-            <g:message code="default.new.label" args="[entityName]" /></g:link>
+            <g:message code="default.new.label" args="[entityName]" />
+        </g:link>
     </div>
-    <h3><g:message code="default.edit.label" args="[entityName]" /></h3>
+    <h3>
+        <g:message code="default.edit.label" args="[entityName]" />
+    </h3>
     <!-- form -->
     <div id="edit-survey" class="content scaffold-edit" role="main">
         <g:form resource="${this.survey}" method="PUT" class="ui form" role="form">
@@ -45,18 +50,13 @@
                 <label>
                     <g:message code="survey.vigency.label" />
                 </label>
-                <div class="ui calendar" id="yearDate">
-                    <div class="ui input left icon">
-                        <i class="calendar icon"></i>
-                        <g:field type="text" name="survey.vigency" required="true" value="${survey.vigency}" />
-                    </div>
-                </div>
+                ${survey.vigency}
             </div>
             <div class="field">
                 <label>
                     <g:message code="survey.category.label" />
                 </label>
-                <g:select class="ui search dropdown" optionKey="id" optionValue="category" from="${valueme.Category.findAllByType(valueme.Param.findByName('survey.categoryType')?.value)}" value="${survey.category.id}" name="survey.category" />
+                ${survey.category.name}
             </div>
             <!-- List of questions -->
             <g:set var="edit" value="${true}" />
@@ -66,12 +66,12 @@
                 </label>
                 <ol lass="ui list">
                     <div class="ui accordion fluid">
-                        <g:each in="${valueme.Category.findAllByType(valueme.Param.findByName('question.categoryType')?.value)}" var="category">
+                        <g:each in="${categories}" var="category">
                             <div class="item">
                                 <div class="title" style="color: ${category.color};">
                                     <li>
                                         <i class="dropdown icon category"></i>
-                                        ${category.type} ${category.category}
+                                        ${category.type.name} ${category.name}
                                     </li>
                                 </div>
                                 <div class="content">
@@ -82,7 +82,8 @@
                     </div>
                 </ol>
             </div>
-            <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+            <input class="ui blue fluid button " type="submit"
+                value="${message(code: 'default.button.update.label', default: 'Update')}" />
         </g:form>
     </div>
 </body>

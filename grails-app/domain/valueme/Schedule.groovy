@@ -3,7 +3,6 @@ import grails.databinding.BindingFormat
 
 class Schedule {
 
-	String id
 	@BindingFormat('dd/MM/yyyy')
 	Date startDate
 	@BindingFormat('dd/MM/yyyy')

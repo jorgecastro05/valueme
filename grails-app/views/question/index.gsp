@@ -30,7 +30,7 @@
         <div class="three fields">
             <div class="field">
                 <label>
-                    <g:message code="question.question.label" />
+                    <g:message code="question.text.label" />
                 </label>
                 <input type="text" name="question" value="${question}">
             </div>
@@ -40,13 +40,18 @@
               </label>
                 <button class="ui blue button" type="submit"><g:message code="default.search.label" /></button>
             </div>
+            <div class="four wide column">
+            <g:link class="fluid ui blue fluid button " action="create">
+                <g:message code="default.new.label" />
+            </g:link>
+            </div>
         </div>
     </g:form>
     <div id="list-question" class="content scaffold-list" role="main">
         <table class="ui compactselectable table">
             <thead>
                 <tr>
-                    <g:sortableColumn class="eleven wide" property="question" title="${message(code: 'question.question.label')}" />
+                    <g:sortableColumn class="eleven wide" property="question" title="${message(code: 'question.text.label')}" />
                     <th>
                         <g:message class="one wide" code="question.active.label" />
                     </th>
@@ -62,14 +67,14 @@
                 <tr>
                     <td>
                         <g:link action="show" id="${question.id}">
-                            ${question.question}
+                            ${question.text}
                         </g:link>
                     </td>
                     <td>
                         <g:formatBoolean boolean="${question.active}" />
                     </td>
                     <td>
-                        ${question.category.category}
+                        ${question.category.name}
                     </td>
                     <td>
                         <g:link action="edit" id="${question.id}">

@@ -17,7 +17,6 @@
     </div>
     <h2 class="ui header">
   <div class="content">
-   <!--${request.forwardURI} -->
     <div class="sub header">
          <g:message code="default.error.label" />
     </div>

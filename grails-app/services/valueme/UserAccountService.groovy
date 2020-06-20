@@ -1,12 +1,15 @@
 package valueme
+import org.springframework.beans.factory.annotation.Value
 
-import grails.transaction.Transactional
-
-@Transactional
 class UserAccountService {
 
     def mailService
-    def grailsApplication
+    
+    @Value('${valueme.fromEmail}')
+    String fromEmail
+
+    @Value('${valueme.subjectEmail}')
+    String subjectEmail
 
     /**
     Send message from email service
@@ -18,14 +21,15 @@ class UserAccountService {
         try {
             mailService.sendMail {
                 to userAccount.email
-                from "encuestasostenibilidad@idipron.gov.co"
-                subject 'Encuesta sostenibilidad [Idipron]'
+                from fromEmail
+                subject subjectEmail
                 html view: '/emails/'+type+'UserAccount', model: [username: userAccount.email, password: userAccount.password]
             }
-            log.debug("E-mail is sent.")
+            log.debug("E-mail was sent successfully")
         } catch (Exception ex) {
             log.error("Error: ${ex.getMessage()}")
             throw ex
         }
     }
+
 }

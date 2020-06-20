@@ -41,7 +41,7 @@
                 <label>
                     <g:message code="assessment.category.label" />
                 </label>
-                <g:select class="ui dropdown" name="category" from="${categories}" optionKey="id" optionValue="category" noSelection="${['':'Todas']}" value="${category?.id}"/>
+                <g:select class="ui dropdown" name="category" from="${categories}" optionKey="id" optionValue="name" noSelection="${['':'Todas']}" value="${category?.id}"/>
             </div>
             <div class="field">
               <label>
@@ -68,11 +68,11 @@
                 <tr>
                     <td>
                         <g:link action="show" id="${assessment.id}">
-                            ${assessment.userAccount.userAccount}
+                            ${assessment.userAccount.username}
                         </g:link>
                     </td>
                     <td>
-                        ${assessment.category.category}
+                        ${assessment.category.name}
                     </td>
                     <td>
                         ${assessment.vigency}

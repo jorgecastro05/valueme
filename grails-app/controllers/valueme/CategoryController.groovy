@@ -1,7 +1,7 @@
 package valueme
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('ROLE_gestionar evaluación')
@@ -9,14 +9,22 @@ import grails.plugin.springsecurity.annotation.Secured
 class CategoryController {
 
     def categoryService
+    def categoryTypeService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        def categoryType = Param.findByName(params.categoryType + '.categoryType')?.value
-        // show root categories by categoryType param
-        def categoryList = Category.findAllByTypeAndParentIsNull(categoryType)
-        respond categoryList, model:[categoryType: params.categoryType]
+        respond Category.list()
+    }
+
+    def indexProcess(){
+        flash.categoryType = "process"
+        respond categoryService.listRootProccessCategories(), view:'index'
+    }
+
+    def indexMeci(){
+        flash.categoryType = "meci"
+        respond categoryService.listRootMeciCategories(), view:'index'
     }
 
     def show(Category category) {
@@ -27,12 +35,25 @@ class CategoryController {
 
     def filterByParent(Category category){
         def categoryList = Category.findAllByParent(category)
+        flash.categoryType = params.categoryType
         respond categoryList, view:'index'
     }
 
     def create() {
-        flash.categoryType = params.categoryType
-        [category: new Category(params) , categories: Category.list()]
+        def categoryList
+        def categoryTypeList
+        switch(params.categoryType) {
+            case 'meci':
+                categoryList = categoryService.listMeciCategories()
+                categoryTypeList = categoryTypeService.listMeciCategoyTypes()
+            break
+            case 'process':
+                categoryList = categoryService.listProcessCategories()
+                categoryTypeList = categoryTypeService.listProcessCategoryTypes()
+            break
+        }
+
+        [category: new Category(params) , categories: categoryList, categoryTypes: categoryTypeList]
     }
 
     @Transactional
@@ -48,12 +69,12 @@ class CategoryController {
             respond category.errors, view:'create'
             return
         }
-
-        categoryService.saveCategory category
-
+        
+        categoryService.saveCategory category 
+        
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'category.label', default: 'Category'), category.category])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'category.label', default: 'Category'), category.name])
                 flash.categoryType = params.categoryType
                 redirect category
             }
@@ -62,7 +83,19 @@ class CategoryController {
     }
 
     def edit(Category category) {
-        respond category
+        def categoryList
+        def categoryTypeList
+        switch(params.categoryType) {
+            case 'meci':
+                categoryList = categoryService.listMeciCategories()
+                categoryTypeList = categoryTypeService.listMeciCategoyTypes()
+            break
+            case 'process':
+                categoryList = categoryService.listProcessCategories()
+                categoryTypeList = categoryTypeService.listProcessCategoryTypes()
+            break
+        }
+        respond category, model: [categories: categoryList, categoryTypes: categoryTypeList]
     }
 
     @Transactional
@@ -83,7 +116,7 @@ class CategoryController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'category.label', default: 'Category'), category.category])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'category.label', default: 'Category'), category.name])
                 flash.categoryType = params.categoryType
                 redirect category
             }

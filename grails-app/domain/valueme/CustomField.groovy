@@ -2,7 +2,6 @@ package valueme
 
 class CustomField {
 
-	String id
 	String type
 	List<String> value
 	String name

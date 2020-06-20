@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h3 class="text-center"><g:message code="progress.description.label" /></h3>
+    <h3 class="ui center aligned header"><g:message code="progress.description.label" /></h3>
     <g:form class="ui form">
         <div class="field">
             <label>
@@ -18,16 +18,16 @@
             <div class="ui calendar" id="yearDate">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <g:field type="text" name="vigency" />
+                    <g:field type="text" name="vigency" required="true" />
                 </div>
             </div>
         </div>
         <g:submitButton name="index" class="ui blue fluid button " value="${message(code: 'default.show.label')}" />
     </g:form>
     <g:if test="${vigency !=0}">
-        <h4>${vigency}</h4>
+        <h4 class="ui center aligned header">${vigency}</h4>
     </g:if>
-    <table class="ui celled table">
+    <table class="ui compact table">
         <thead>
             <tr>
                 <th>Cuenta usuario</th>
@@ -40,13 +40,13 @@
             <g:each in="${userAccountList}" var="userAccount">
                 <tr>
                     <td>
-                        ${userAccount.userAccount}
+                        ${userAccount.username}
                     </td>
                     <td>
                         ${userAccount.fullName}
                     </td>
                     <td>
-                        ${userAccount.category?.category}
+                        ${userAccount.category?.name}
                     </td>
                     <td>
                         <g:formatBoolean boolean="${userAccount.finished}" />

@@ -8,22 +8,17 @@ class ProgressController {
         List<UserAccount> userAccountList = null
         if(vigency != 0){
             userAccountList = UserAccount.list()
-            for(userAccount in userAccountList){
-                if(userAccount.vigencyStart <= vigency && (userAccount.vigencyEnd == 0 || vigency <= userAccount.vigencyEnd)) {
-                    if(Assessment.findByUserAccountAndFinishedAndVigency(userAccount,true,vigency)){
-                        userAccount.metaClass.finished = true
-                    }else{
-                        userAccount.metaClass.finished = false
-                    }
-                }else{
-                    userAccountList -= userAccount
+            for(userAccount in userAccountList) {
+                if(Assessment.findByUserAccountAndFinishedAndVigency(userAccount,true,vigency)) {
+                    userAccount.metaClass.finished = true
+                } else {
+                    userAccount.metaClass.finished = false
                 }
             }
             userAccountList = userAccountList.sort {
                 it.finished
             }
         }
-
         respond userAccountList: userAccountList, vigency: vigency
     }
 }

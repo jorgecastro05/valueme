@@ -33,7 +33,7 @@
                             <g:message code="score.group.label" />
                             <g:help message="help.score.calculate" />
                         </label>
-                        <g:select class="ui search fluid dropdown" name="categoryType" from='${[    'Módulo','Componente','Elemento']}' value="${categoryType}"></g:select>
+                        <g:select class="ui search fluid dropdown" name="categoryType" from='${categoryTypes}' optionKey="name" optionValue="name"></g:select>
                     </div>
                     <div class="field">
                         <label>
@@ -64,9 +64,9 @@
                   Resultado por pregunta
              </h4>
                   <ol>
-                      <g:each in="${valueme.Category.findAllByType(valueme.Param.findByName('question.categoryType')?.value)}" var="category">
+                      <g:each in="${categories}" var="category">
                           <li class="category" style="color: ${category.color};">
-                              ${category.type} ${category.category}
+                            ${category.name}
                           </li>
                           <g:render template="step" model="${[category: category]}"/>
                       </g:each>

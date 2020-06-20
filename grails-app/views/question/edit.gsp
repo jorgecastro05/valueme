@@ -43,7 +43,7 @@
                 <label>
                     <g:message code="question.question.label" />
                 </label>
-                <f:input bean="question" property="question" />
+                <f:input bean="question" property="text" />
             </div>
             <div class="inline field">
                 <label>
@@ -58,10 +58,11 @@
                     <g:message code="question.category.label" />
                 </label>
                 <ol lass="ui list">
-                    <g:each in="${valueme.Category.findAllByType(valueme.Param.findByName('question.categoryType')?.value)}" var="category">
+                <g:set var="edit" value="${true}" />
+                    <g:each var="category" in="${categories}">
                         <li>
                             <div class="category" style="color: ${category.color};">
-                                ${category.type} ${category.category}
+                                ${category.type.name} ${category.name}
                             </div>
                             <g:render template="step" model="${[category: category]}" />
                         </li>

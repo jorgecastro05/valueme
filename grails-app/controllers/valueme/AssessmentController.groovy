@@ -1,7 +1,7 @@
 package valueme
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.gorm.*
@@ -11,12 +11,13 @@ import grails.gorm.*
 class AssessmentController {
 
     def springSecurityService
+    def categoryService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     @Secured('ROLE_gestionar evaluación')
     def index() {
-        render view: 'index', model: [categories: Category.findAllByParentIsNotNullAndType(Param.findByName("survey.categoryType").value)]
+        render view: 'index', model: [categories: categoryService.listChildProccessCategories()]
     }
 
     /*
@@ -41,7 +42,7 @@ class AssessmentController {
     }
 
     def show(Assessment assessment) {
-        respond assessment
+        respond assessment, model: [categories: categoryService.listRootMeciCategories()]
     }
 
     def create() {
@@ -61,7 +62,7 @@ class AssessmentController {
             }
             assessment.survey = survey
             assessment.vigency = survey.vigency
-            respond assessment
+            respond assessment, model: [categories: categoryService.listRootMeciCategories()]
 
         } else {
             flash.error =  message(code: 'assessment.noschedule.message')
@@ -113,7 +114,7 @@ class AssessmentController {
     }
 
     def edit(Assessment assessment) {
-        respond assessment
+        respond assessment, model: [categories: categoryService.listRootMeciCategories()]
     }
 
     /*

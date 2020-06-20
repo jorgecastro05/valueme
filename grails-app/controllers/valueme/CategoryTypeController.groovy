@@ -1,7 +1,7 @@
 package valueme
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('ROLE_gestionar parámetros')
@@ -41,7 +41,7 @@ class CategoryTypeController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.categoryType])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.name])
                 redirect categoryType
             }
             '*' { respond categoryType, [status: CREATED] }
@@ -70,7 +70,7 @@ class CategoryTypeController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.categoryType])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.name])
                 redirect categoryType
             }
             '*'{ respond categoryType, [status: OK] }
@@ -90,7 +90,7 @@ class CategoryTypeController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.categoryType])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'categoryType.label', default: 'CategoryType'), categoryType.name])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

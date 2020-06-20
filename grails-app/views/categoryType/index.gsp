@@ -21,7 +21,9 @@
     <!-- buttons -->
     <div class="ui stackable grid">
         <div class="twelve wide column">
-            <h3><g:message code="${entityName}.list.label"/></h3>
+            <h3>
+                <g:message code="${entityName}.list.label" />
+            </h3>
         </div>
         <div class="four wide column">
             <g:link class="fluid ui blue fluid button " action="create">
@@ -35,7 +37,10 @@
         <table class="ui compact selectable table">
             <thead>
                 <tr>
-                    <g:sortableColumn property="categoryType" title="${message(code: 'categoryType.categoryType.label')}" />
+                    <g:sortableColumn property="categoryType" title="${message(code: 'categoryType.name.label')}" />
+                    <th>
+                        <g:message code="categoryType.meta.label" />
+                    </th>
                     <th>
                         <g:message code="default.options.label" />
                     </th>
@@ -45,13 +50,16 @@
                 <tr>
                     <td>
                         <g:link action="show" id="${categoryType.id}">
-                            ${categoryType.categoryType}
+                            ${categoryType.name}
                         </g:link>
                     </td>
                     <td>
-                    <g:link action="edit" id="${categoryType.id}">
-                        <g:message code="default.button.edit.label" />
-                    </g:link>
+                        ${categoryType.applyTo}
+                    </td>
+                    <td>
+                        <g:link action="edit" id="${categoryType.id}">
+                            <g:message code="default.button.edit.label" />
+                        </g:link>
                     </td>
                 </tr>
             </g:each>

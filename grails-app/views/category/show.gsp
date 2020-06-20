@@ -23,7 +23,7 @@
         // For each orgchart box, provide the name, manager, and tooltip to show.
         <%
         for(category in categoryList) { %>
-        data.addRow(['${category.category}', '${category.parent.category}', '${category.type}']);
+        data.addRow(['${category.name}', '${category.parent.name}', '${category.type.name}']);
         <% }%>
 
         // Create the chart.
@@ -62,13 +62,13 @@
                 <div class="header">
                     <g:message code="category.label" />
                 </div>
-                ${category.category}
+                ${category.name}
             </div>
             <div class="item">
                 <div class="header">
                     <g:message code="category.type.label" />
                 </div>
-                ${category.type}
+                ${category.type.name}
             </div>
             <div class="item">
                 <div class="header">
@@ -99,13 +99,13 @@
                 <div class="header">
                     <g:message code="category.childs.label" />
                 </div>
-                ${category.childs?.category}
+                ${category.childs?.name}
             </div>
             <div class="item">
                 <div class="header">
                     <g:message code="category.parent.label" />
                 </div>
-                ${category.parent?.category}
+                ${category.parent?.name}
             </div>
             <div class="item">
                 <div class="header">

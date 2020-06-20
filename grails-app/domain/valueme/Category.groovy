@@ -2,23 +2,27 @@ package valueme
 
 class Category {
 
-	String id
-	String category
+	String name
 	String color
-	String type
+	CategoryType type
 	List<Category> childs
 	Category parent
 	boolean active
 	int order
 	String description
 
-	static hasOne = [parent:Category]
+	static hasOne = [type: CategoryType]
+	static belongsTo = [parent: Category]
 	static hasMany = [childs: Category]
 
 	static constraints = {
-		parent nullable: true
-		category unique: 'type'
-		category index: true
+		parent validator: { Category val, Category obj -> 
+		if ( val == null && obj.type.name != Constants.ROOT_CATEGORY ) {
+			return ['parent.required']
+			}
+		}
+
+		name index: true, unique: 'type'
 		type index: true
 		description nullable: true
 	}
@@ -27,5 +31,4 @@ class Category {
 		sort order: "asc"
 		order column: "order_number"
 	}
-
 }

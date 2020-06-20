@@ -58,13 +58,13 @@
                 <label>
                     <g:message code="customField.type.label" />
                 </label>
-                <g:select class="ui dropdown" name="customField.type" from="${['text','list']}" value="${customField.type}" valueMessagePrefix="customField" />
+                ${customField.type}
             </div>
             <div class="field">
                 <label>
                     <g:message code="customField.section.label" />
                 </label>
-                <g:select class="ui dropdown" name="customField.section" from="${['header','content']}" value="${customField.section}" valueMessagePrefix="customField" />
+                ${customField.section}
             </div>
             <div class="inline field">
                 <label>

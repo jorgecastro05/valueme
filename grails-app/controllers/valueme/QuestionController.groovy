@@ -1,13 +1,15 @@
 package valueme
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import grails.gorm.*
 
 @Secured('ROLE_gestionar evaluación')
 @Transactional(readOnly = true)
 class QuestionController {
+
+    def categoryService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -22,21 +24,52 @@ class QuestionController {
      */
     def search(Integer max){
         DetachedCriteria<Question> query = Question.where {
-            question =~ '%'+ params.question +'%'
+            text =~ '%'+ params.text +'%'
         }
         params.max = Math.min(max ?: 10, 100)
         def questionList = query.list(params)
         render view: 'index', model: [questionList: questionList,
-            question: params.question,
+            question: params.text,
             questionCount: questionList.getTotalCount()]
     }
 
     def show(Question question) {
-        respond question
+        respond question, model:[categories: categoryService.listRootMeciCategories()]
+    }
+
+    def create() {
+        respond new Question(params), model:[categories: categoryService.listRootMeciCategories()]
+    }
+
+    @Transactional
+    def save(Question question) {
+        
+        if (question == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
+
+        if (question.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond question.errors, view:'create'
+            return
+        }
+
+        question.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'question.label', default: 'question'), question.id])
+                redirect question
+            }
+            '*' { respond question, [status: CREATED] }
+        }
     }
 
     def edit(Question question) {
-        respond question
+        def categoryType = Param.findByName('question.categoryType')?.value
+        respond question, model:[categories: categoryService.listRootMeciCategories()]
     }
 
     @Transactional
@@ -57,7 +90,7 @@ class QuestionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'question.label', default: 'Question'), question.question])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'question.label', default: 'Question'), question.text])
                 redirect question
             }
             '*'{ respond question, [status: OK] }

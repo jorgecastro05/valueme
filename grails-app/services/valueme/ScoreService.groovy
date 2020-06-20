@@ -1,6 +1,6 @@
 package valueme
 
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 
 @Transactional
 class ScoreService {
@@ -16,7 +16,7 @@ class ScoreService {
 
 	    def result = [:]
 	    result.assesments = assessments.size()
-	    result.responsibles = UserAccount.findAllByActiveAndCategoryIsNotNull(true).size()
+	    result.responsibles = UserAccount.findAllByEnabledAndCategoryIsNotNull(true).size()
 	    result.questions = scoresByCategory.scores
 	    result.scoreColumns = [['string', 'categoria'], ['number', 'Puntaje']]
 	    result.scoreData = this.googleAPIprocess(scoresByCategory.scoresByCategory)
@@ -35,13 +35,13 @@ class ScoreService {
 	// procesar resultados de la encuesta A
         def categoriesA = getAllCategories([categoryA])
 	def assessmentsA = Assessment.findAllByCategoryInListAndVigencyAndFinished(categoriesA,vigency,true)
-	def scoreAByCategory = getScoreByAssessmentsAndCategoryType(assessmentsA,categoryType)
+	def scoreAByCategory = this.getScoreByAssessmentsAndCategoryType(assessmentsA,categoryType)
 
 
 	// procesar los resultados de la encuesta(s) B
 	def categoriesB = getAllCategories(categoryB as List)
 	def assessmentsB = Assessment.findAllByCategoryInListAndVigencyAndFinished(categoriesB,vigency,true)
-	def scoreBByCategory = getScoreByAssessmentsAndCategoryType(assessmentsB,categoryType)
+	def scoreBByCategory = this.getScoreByAssessmentsAndCategoryType(assessmentsB,categoryType)
 
 	def result = [:]
 	result.scoreA = this.googleAPIprocess(scoreAByCategory.scoresByCategory)
@@ -95,7 +95,7 @@ class ScoreService {
             def assessments = Assessment.findAllByVigencyAndFinished(vigency,true)
             //obtener los resultados por el tipo de categoria
 
-            def scoreByAssessments = getScoreByAssessmentsAndCategoryType(assessments, categoryType)
+            def scoreByAssessments = this.getScoreByAssessmentsAndCategoryType(assessments, categoryType)
 
             //scoresByCategory representa las categorias y su puntaje [(Object) categoria: (int) puntaje]
             scoresByCategory = scoreByAssessments.scoresByCategory
@@ -145,13 +145,13 @@ class ScoreService {
      */
     def getScoreByAssessmentsAndCategoryType(List<Assessment> assessments, String categoryType){
 
-        def scoreByAssessments = getBasicScores(assessments)
+        def scoreByAssessments = this.getBasicScores(assessments)
         def scoresByCategory =  scoreByAssessments.scoresByCategory
         def scores = scoreByAssessments.scores
 
 	// iterar sobre las categorias padre hasta que encuentre un nivel con el TIPO de categoria ingresado
 	if(scoresByCategory)
-        while(scoresByCategory.keySet().iterator().next().type != categoryType) {
+        while(scoresByCategory.keySet().iterator().next().type.name != categoryType) {
             // agrupar las categorias por categoria padre
             scoresByCategory = scoresByCategory.groupBy {key, value ->
                 // si no se presenta la categoria padre agrupar por la actual
@@ -244,7 +244,7 @@ class ScoreService {
                 criteria = 'Alto'
                 color = '#0AB200'
             }
-            scoreFinal.add([result.key.category, result.value, color, criteria])
+            scoreFinal.add([result.key.name, result.value, color, criteria])
         }
         return scoreFinal
     }

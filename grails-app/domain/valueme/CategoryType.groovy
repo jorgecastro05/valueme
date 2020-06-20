@@ -2,11 +2,13 @@ package valueme
 
 class CategoryType {
 
-	String id
-	String categoryType
+	String name
+	String applyTo
 
     static constraints = {
-    	categoryType unique: true
-    	categoryType index: true
+    	name unique: true, index: true
+		applyTo inList: ["process","meci", "root"]
     }
+
+	static hasMany = [ categories: Category ]
 }

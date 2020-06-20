@@ -34,7 +34,13 @@
                 <div class="header">
                     <g:message code="categoryType.label" />
                 </div>
-                ${categoryType.categoryType}
+                ${categoryType.name}
+            </div>
+            <div class="item">
+                <div class="header">
+                    <g:message code="categoryType.meta.label" />
+                </div>
+                ${categoryType.applyTo}
             </div>
         </div>
         <g:form resource="${this.categoryType}" method="DELETE">

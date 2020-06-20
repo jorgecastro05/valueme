@@ -1,162 +1,154 @@
 package valueme
+import grails.gorm.transactions.Transactional
 
 class BootStrap {
-    
+
     def init = { servletContext ->
+    populate()
+    }
+    def destroy = {
+    }
 
-        println 'BootStrap Application init'
-    	// create initial roles, permissions and userAccount admin if not exists
+    @Transactional
+    void populate() {
+        log.info "Init bootstraping application"
+        Role role1 = new Role(authority : "ROLE_gestionar evaluación").save(failOnError: true)
+        Role role2 = new Role(authority : "ROLE_realizar evaluación").save(failOnError: true)
+        Role role3 = new Role(authority : "ROLE_gestion usuarios").save(failOnError: true)
+        Role role4 = new Role(authority : "ROLE_ver resultados").save(failOnError: true)
+        Role role5 = new Role(authority : "ROLE_gestionar parámetros").save(failOnError: true)
 
-    	if (!Permission.count()) {
-            new Permission(permission : "ROLE_gestionar evaluación").save(failOnError: true)
-            new Permission(permission : "ROLE_realizar evaluación").save(failOnError: true)
-            new Permission(permission : "ROLE_gestion usuarios").save(failOnError: true)
-            new Permission(permission : "ROLE_ver resultados").save(failOnError: true)
-            new Permission(permission : "ROLE_gestionar parámetros").save(failOnError: true)
-    	}
-
-    	if (!Role.count()) {
-            new Role(permissions:["ROLE_realizar evaluación"], role: "Evaluador").save(failOnError: true)
-            new Role(permissions:["ROLE_gestionar evaluación", "ROLE_gestion usuarios", "ROLE_ver resultados"], role: "Analista").save(failOnError: true)
-            new Role(permissions:["ROLE_realizar evaluación", "ROLE_ver resultados","ROLE_gestionar evaluación","ROLE_gestion usuarios","ROLE_gestionar parámetros"], role: "Administrador").save(failOnError: true)
-    	}
-
-        //create sample administrator
-    	if(!UserAccount.findByUserAccount("admin@valueme.com")){
-            new UserAccount(
-                active : true,
-                fullName : "administrator",
-                passwordHash : "1",
-                passwordHashAlgorithm : "bcrypt",
-                userAccount : "admin@valueme.com",
-                roles : [ "Evaluador","Analista","Administrador"]
-            ).save(failOnError: true)
-    	}
-
-	    //String id
-	    //String name
-	    //String value
-	    //String description
-	    //String label
-
-        if(!Param.count()){
-            new Param(name: 'question.categoryType', description: 'tipo de categoria raiz del conjunto de preguntas', value: 'Módulo', label: 'Módulos').save(failOnError: true)
-            new Param(name: 'mail.username', description: 'nombre de correo electronico de envio').save(failOnError: true)
-            new Param(name: 'mail.password', description: 'contraseña de correo electronico de envio').save(failOnError: true)
-            new Param(name: 'survey.categoryType', description: 'tipo de categoria asociada a una encuesta', value: 'Proceso', label: 'Procesos').save(failOnError: true)
-            new Param(name: 'mail.active', description: 'habilitar envio de correo electronico en la creación o modificación de cuentas de usuario', value: false).save(failOnError: true)
-            new Param(name: 'html.meci', description: 'Texto acerca del meci en la pagina principal en HTML' , value: '<h4 style="text-align: center;">El Modelo Est&aacute;ndar de Control Interno para el Estado Colombiano &ndash; MECI proporciona la estructura b&aacute;sica para evaluar la estrategia, la gesti&oacute;n y los propios mecanismos de evaluaci&oacute;n del proceso administrativo, y aunque promueve una estructura uniforme, puede ser adaptada a las necesidades espec&iacute;ficas de cada entidad, a sus objetivos, estructura, tama&ntilde;o, procesos y servicios que suministran. El MECI concibe el Control Interno como un conjunto de elementos interrelacionados, donde intervienen todos los servidores de la entidad, como responsables del control en el ejercicio de sus actividades; busca garantizar razonablemente el cumplimiento de los objetivos institucionales y la contribuci&oacute;n de &eacute;stos a los fines esenciales del Estado; a su vez, persigue la coordinaci&oacute;n de las acciones, la fluidez de la informaci&oacute;n y comunicaci&oacute;n, anticipando y corrigiendo, de manera oportuna, las debilidades que se presentan en el quehacer institucional.</h4>').save(failOnError: true)
-            new Param(name: 'survey.maxAssessments', description: 'Número maximo de encuestas que un usuario puede completar', value: '1').save(failOnError: true)
-        }
-
+        RoleGroup administrador = new RoleGroup(name: 'Administrador').save(failOnError: true)
+        RoleGroup analista = new RoleGroup(name: 'Analista').save(failOnError: true)
+        RoleGroup evaluador = new RoleGroup(name: 'Evaluador').save(failOnError: true)
         
-        if(!CategoryType.count()){
-            //Create MECI Structure 2014 Type Categories  
-            CategoryType modulo = new CategoryType(categoryType: 'Módulo').save(failOnError: true)
-            CategoryType componente = new CategoryType(categoryType: 'Componente').save(failOnError: true)
-            CategoryType elemento = new CategoryType(categoryType: 'Elemento').save(failOnError: true)
-            //Structure for users
-            CategoryType proceso = new CategoryType(categoryType: 'Proceso').save(failOnError: true)
-            CategoryType area = new CategoryType(categoryType: 'Área').save(failOnError: true)
-        }
+        UserAccount userAdmin = new UserAccount(username: 'admin@valueme.com', password: '1', fullName: 'administrador').save(failOnError: true)
+
+        // create roleGroups
+        RoleGroupRole.create administrador, role1
+        RoleGroupRole.create administrador, role2
+        RoleGroupRole.create administrador, role3
+        RoleGroupRole.create administrador, role4
+        RoleGroupRole.create administrador, role5
+        
+        RoleGroupRole.create analista, role1
+        RoleGroupRole.create analista, role3
+        RoleGroupRole.create analista, role4
+
+        RoleGroupRole.create evaluador, role2
+
+        UserAccountRoleGroup.create userAdmin, administrador
+
+        //create parameters
+        new Param(name: 'mail.username', description: 'nombre de correo electronico de envio').save(failOnError: true)
+        new Param(name: 'mail.password', description: 'contraseña de correo electronico de envio').save(failOnError: true)
+        new Param(name: 'mail.active', description: 'habilitar envio de correo electronico en la creación o modificación de cuentas de usuario', value: false).save(failOnError: true)
+        new Param(name: 'html.meci', description: 'Texto acerca del meci en la pagina principal en HTML' , value: '').save(failOnError: true)
+        new Param(name: 'survey.maxAssessments', description: 'Número maximo de encuestas que un usuario puede completar', value: '1').save(failOnError: true)
+
+        //Create unique root application categories
+        CategoryType rootType = new CategoryType(name: 'ROOT', applyTo: "root").save(failOnError: true)
+        Category meciRoot = new Category(name: 'MECI_ROOT', color: 'FFFFFF', type: rootType, active: true, order: 0).save(failOnError: true)
+        Category processRoot = new Category(name: 'PROCESS_ROOT', color: 'FFFFFF', type: rootType, active: true, order: 0).save(failOnError: true)
+
+        //Create MECI Structure 2014 Type Categories
+
+        CategoryType modulo = new CategoryType(name: 'Módulo', applyTo: "meci").save(failOnError: true)
+        CategoryType componente = new CategoryType(name: 'Componente', applyTo: "meci").save(failOnError: true)
+        CategoryType elemento = new CategoryType(name: 'Elemento', applyTo: "meci").save(failOnError: true)
+        //Structure for users
+        CategoryType proceso = new CategoryType(name: 'Proceso', applyTo: "process").save(failOnError: true)
+        CategoryType area = new CategoryType(name: 'Área', applyTo: "process").save(failOnError: true)
+
+        //Principal Process
+        Category estrategico = new Category(name: 'Estratégicos', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(failOnError: true)
+        Category misionales = new Category(name: 'Misionales', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(failOnError: true)
+        Category apoyo = new Category(name: 'Apoyo', color: 'FFFFFF', type: proceso, active: true, order: 0, parent: processRoot).save(flush: true)
+        //Child process
+        Category servicios = new Category(name: 'Área de Servicios', color: 'FFFFFF', type: area, active: true, order: 0, parent: apoyo).save(flush: true)
+
+        processRoot
+        .addToChilds(estrategico)
+        .addToChilds(misionales)
+        .addToChilds(apoyo).save(flush: true, failOnError: true)
+
+        apoyo.addToChilds(servicios).save(flush: true, failOnError: true)
 
         //create MECI 2014 Categories
-        //String category
-	    //String color
-	    //String type
-	    //List<Category> childs
-	    //Category parent
-	    //boolean active
-	    //int order
-	    //String description
 
-        if(!Category.count()){
-            Category eje_transversal_informacion_y_comunicacion = new Category(category: 'Eje Transversal: Información y Comunicación', color: 'FFFFFF', type: 'Módulo', active: true, order: 2)
+        Category eje_transversal_informacion_y_comunicacion = 
+                new Category(name: 'Eje Transversal: Información y Comunicación', color: 'FFFFFF', type: componente, parent: meciRoot, active: true, order: 2)
 
-            Category talento_humano = new Category(category: 'Talento Humano', color: 'FFFFFF', type: 'Componente', active: true, order: 0)
-            Category talento_humano_1 = new Category(category: 'Acuerdos, Compromisos y Protocolos éticos', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
-            Category talento_humano_2 = new Category(category: ' Desarrollo del Talento Humano', color: 'FFFFFF', type: 'Elemento', active: true, order: 1)
-            
-            talento_humano
-            .addToChilds(talento_humano_1)
-            .addToChilds(talento_humano_2).save(flush: true)
-
-            Category direcionamiento_estrategico = new Category(category: 'Direccionamiento Estratégico', color: 'FFFFFF', type: 'Componente', active: true, order: 1)
-            Category direcionamiento_estrategico_1 = new Category(category: 'Planes, Programas y Proyectos', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
-            Category direcionamiento_estrategico_2 = new Category(category: 'Modelo de Operación por Procesos', color: 'FFFFFF', type: 'Elemento', active: true, order: 1)
-            Category direcionamiento_estrategico_3 = new Category(category: 'Estructura Organizacional', color: 'FFFFFF', type: 'Elemento', active: true, order: 2)
-            Category direcionamiento_estrategico_4 = new Category(category: 'Indicadores de Gestión', color: 'FFFFFF', type: 'Elemento', active: true, order: 3)
-            Category direcionamiento_estrategico_5 = new Category(category: 'Políticas de Operación', color: 'FFFFFF', type: 'Elemento', active: true, order: 4)
-
-            
-            direcionamiento_estrategico
-            .addToChilds(direcionamiento_estrategico_1)
-            .addToChilds(direcionamiento_estrategico_2)
-            .addToChilds(direcionamiento_estrategico_3)
-            .addToChilds(direcionamiento_estrategico_4)
-            .addToChilds(direcionamiento_estrategico_5).save(flush: true)
-
-            Category administracion_del_riesgo = new Category(category: 'Administración del Riesgo', color: 'FFFFFF', type: 'Componente', active: true, order: 2)
-            Category administracion_del_riesgo_1 = new Category(category: 'Políticas de Administración del Riesgo', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
-            Category administracion_del_riesgo_2 = new Category(category: 'Identificación del Riesgo', color: 'FFFFFF', type: 'Elemento', active: true, order: 1)
-            Category administracion_del_riesgo_3 = new Category(category: 'Análisis y Valoración del Riesgo', color: 'FFFFFF', type: 'Elemento', active: true, order: 2)
-      
-            administracion_del_riesgo
-            .addToChilds(administracion_del_riesgo_1)
-            .addToChilds(administracion_del_riesgo_2)
-            .addToChilds(administracion_del_riesgo_3).save(flush: true)
-
-            Category modulo_de_control_de_planeacion_y_gestion = new Category(category: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: 'Módulo', active: true, order: 0)
-            .addToChilds(administracion_del_riesgo)
-            .addToChilds(direcionamiento_estrategico)
-            .addToChilds(talento_humano).save(flush: true)
+        Category talento_humano = new Category(name: 'Talento Humano', color: 'FFFFFF', type: componente, active: true, order: 0)
+        Category talento_humano_1 = new Category(name: 'Acuerdos, Compromisos y Protocolos éticos', color: 'FFFFFF', type: elemento, active: true, order: 0)
+        Category talento_humano_2 = new Category(name: ' Desarrollo del Talento Humano', color: 'FFFFFF', type: elemento, active: true, order: 1)
         
+        talento_humano
+        .addToChilds(talento_humano_1)
+        .addToChilds(talento_humano_2).save(flush: true)
+
+        Category direcionamiento_estrategico = new Category(name: 'Direccionamiento Estratégico', color: 'FFFFFF', type: componente, active: true, order: 1)
+        Category direcionamiento_estrategico_1 = new Category(name: 'Planes, Programas y Proyectos', color: 'FFFFFF', type: elemento, active: true, order: 0)
+        Category direcionamiento_estrategico_2 = new Category(name: 'Modelo de Operación por Procesos', color: 'FFFFFF', type: elemento, active: true, order: 1)
+        Category direcionamiento_estrategico_3 = new Category(name: 'Estructura Organizacional', color: 'FFFFFF', type: elemento, active: true, order: 2)
+        Category direcionamiento_estrategico_4 = new Category(name: 'Indicadores de Gestión', color: 'FFFFFF', type: elemento, active: true, order: 3)
+        Category direcionamiento_estrategico_5 = new Category(name: 'Políticas de Operación', color: 'FFFFFF', type: elemento, active: true, order: 4)
+        
+        direcionamiento_estrategico
+        .addToChilds(direcionamiento_estrategico_1)
+        .addToChilds(direcionamiento_estrategico_2)
+        .addToChilds(direcionamiento_estrategico_3)
+        .addToChilds(direcionamiento_estrategico_4)
+        .addToChilds(direcionamiento_estrategico_5).save(flush: true)
+
+        Category administracion_del_riesgo = new Category(name: 'Administración del Riesgo', color: 'FFFFFF', type: componente, active: true, order: 2)
+        Category administracion_del_riesgo_1 = new Category(name: 'Políticas de Administración del Riesgo', color: 'FFFFFF', type: elemento, active: true, order: 0)
+        Category administracion_del_riesgo_2 = new Category(name: 'Identificación del Riesgo', color: 'FFFFFF', type: elemento, active: true, order: 1)
+        Category administracion_del_riesgo_3 = new Category(name: 'Análisis y Valoración del Riesgo', color: 'FFFFFF', type: elemento, active: true, order: 2)
+    
+        administracion_del_riesgo
+        .addToChilds(administracion_del_riesgo_1)
+        .addToChilds(administracion_del_riesgo_2)
+        .addToChilds(administracion_del_riesgo_3).save(flush: true)
+
+        Category modulo_de_control_de_planeacion_y_gestion = 
+                new Category(name: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: modulo, parent: meciRoot, active: true, order: 0)
+        .addToChilds(administracion_del_riesgo)
+        .addToChilds(direcionamiento_estrategico)
+        .addToChilds(talento_humano).save(flush: true)
+    
             
-            Category autoevaluacion_institucional = new Category(category: 'Autoevaluación Institucional', color: 'FFFFFF', type: 'Componente', active: true, order: 0)
-            Category autoevaluacion_del_control_y_gestion = new Category(category: 'Autoevaluación del Control y Gestión', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
-            
-            autoevaluacion_institucional
-            .addToChilds(autoevaluacion_del_control_y_gestion).save(flush: true)
+        Category autoevaluacion_institucional = new Category(name: 'Autoevaluación Institucional', color: 'FFFFFF', type: componente, active: true, order: 0)
+        Category autoevaluacion_del_control_y_gestion = new Category(name: 'Autoevaluación del Control y Gestión', color: 'FFFFFF', type: elemento, active: true, order: 0)
+        
+        autoevaluacion_institucional.addToChilds(autoevaluacion_del_control_y_gestion).save(flush: true)
 
-            Category auditoria_interna = new Category(category: 'Auditoría Interna', color: 'FFFFFF', type: 'Componente', active: true, order: 1)
-            Category auditoria_interna_1 = new Category(category: 'Auditoría Interna', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
+        Category auditoria_interna = new Category(name: 'Auditoría Interna', color: 'FFFFFF', type: componente, active: true, order: 1)
+        Category auditoria_interna_1 = new Category(name: 'Auditoría Interna', color: 'FFFFFF', type: elemento, active: true, order: 0)
 
-            auditoria_interna
-            .addToChilds(auditoria_interna_1).save(flush: true)
+        auditoria_interna.addToChilds(auditoria_interna_1).save(flush: true)
+
+        Category planes_de_mejoramiento = new Category(name: 'Planes de Mejoramiento', color: 'FFFFFF', type: componente, active: true, order: 2)
+        Category plan_de_mejoramiento = new Category(name: 'Plan de Mejoramiento', color: 'FFFFFF', type: elemento, active: true, order: 0)
+        
+        planes_de_mejoramiento.addToChilds(plan_de_mejoramiento).save(flush: true)
+
+        Category modulo_de_control_de_evaluacion_y_seguimiento = 
+                new Category(name: 'Módulo de Control de Evaluación y Seguimiento', color: 'FFFFFF', type: modulo, parent: meciRoot, active: true, order: 1)
+        .addToChilds(planes_de_mejoramiento)
+        .addToChilds(auditoria_interna)
+        .addToChilds(autoevaluacion_institucional).save(flush: true)
 
 
-            Category planes_de_mejoramiento = new Category(category: 'Planes de Mejoramiento', color: 'FFFFFF', type: 'Componente', active: true, order: 2)
-            Category plan_de_mejoramiento = new Category(category: 'Plan de Mejoramiento', color: 'FFFFFF', type: 'Elemento', active: true, order: 0)
+        meciRoot
+        .addToChilds(eje_transversal_informacion_y_comunicacion)
+        .addToChilds(modulo_de_control_de_planeacion_y_gestion)
+        .addToChilds(modulo_de_control_de_evaluacion_y_seguimiento).save(flush: true)
 
-            planes_de_mejoramiento
-            .addToChilds(plan_de_mejoramiento).save(flush: true)
 
+        //Create a example Survey
 
-            Category modulo_de_control_de_evaluacion_y_seguimiento = new Category(category: 'Módulo de Control de Evaluación y Seguimiento', color: 'FFFFFF', type: 'Módulo', active: true, order: 1)
-            .addToChilds(planes_de_mejoramiento)
-            .addToChilds(auditoria_interna)
-            .addToChilds(autoevaluacion_institucional).save(flush: true)
-         
-
-            
-            //Company process or Areas
-            Category estrategico = new Category(category: 'Estratégicos', color: 'FFFFFF', type: 'Proceso', active: true, order: 0).save(failOnError: true)
-            Category misionales = new Category(category: 'Misionales', color: 'FFFFFF', type: 'Proceso', active: true, order: 0).save(failOnError: true)
-            Category sistemas = new Category(category: 'Área de Sistemas', color: 'FFFFFF', type: 'Proceso', active: true, order: 0).save(flush: true)
-            Category apoyo = new Category(category: 'Apoyo', color: 'FFFFFF', type: 'Proceso', active: true, order: 0)
-            .addToChilds(sistemas).save(flush: true)
-            Category evaluacion = new Category(category: 'Evaluación', color: 'FFFFFF', type: 'Proceso', active: true, order: 0).save(failOnError: true)
-            
-        }
-            
-       
-        if(!Survey.count()) {
-            //Create a example Survey
-            //First we need to create a Question
-            //String question
-	        //Category category
-	        //boolean active
-            String[] questionsText = [
+        String[] questionsText = [
             "¿Existe un documento o código de ética que contenga los Acuerdos, Compromisos o Protocolos Éticos?",
             "¿Se difunden los Acuerdos, Compromisos o Protocolos Éticos a todos los servidores de la Entidad.?",
             "¿El documento o código de ética se adoptó con la participación de los representantes de las dependencias de la entidad.?",
@@ -173,54 +165,51 @@ class BootStrap {
             "¿La alta dirección asume la responsabilidad de las acciones del mejoramiento y compromisos adquiridos con los entes de control del Estado.?"    
             ]
 
-            def questions = []
-            questions.add(new Question(question: questionsText[0], category: Category.findByCategory("Talento Humano").childs[0], active: true))
-            questions.add(new Question(question: questionsText[1], category: Category.findByCategory("Talento Humano").childs[1], active: true))
-            questions.add(new Question(question: questionsText[2], category: Category.findByCategory("Talento Humano").childs[1], active: true))
-            questions.add(new Question(question: questionsText[3], category: Category.findByCategory("Direccionamiento Estratégico").childs[0], active: true))
-            questions.add(new Question(question: questionsText[4], category: Category.findByCategory("Direccionamiento Estratégico").childs[1], active: true))
-            questions.add(new Question(question: questionsText[5], category: Category.findByCategory("Direccionamiento Estratégico").childs[2], active: true))
-            questions.add(new Question(question: questionsText[6], category: Category.findByCategory("Direccionamiento Estratégico").childs[3], active: true))
-            questions.add(new Question(question: questionsText[7], category: Category.findByCategory("Direccionamiento Estratégico").childs[4], active: true))
-            questions.add(new Question(question: questionsText[8], category: Category.findByCategory("Administración del Riesgo").childs[0], active: true))
-            questions.add(new Question(question: questionsText[9], category: Category.findByCategory("Administración del Riesgo").childs[1], active: true))
-            questions.add(new Question(question: questionsText[10], category: Category.findByCategory("Administración del Riesgo").childs[2], active: true))
-            questions.add(new Question(question: questionsText[11], category: Category.findByCategory("Administración del Riesgo").childs[2], active: true))
-            questions.add(new Question(question: questionsText[12], category: Category.findByCategory("Autoevaluación del Control y Gestión"), active: true))
-            questions.add(new Question(question: questionsText[13], category: Category.findByCategory("Plan de Mejoramiento"), active: true))
-            
-	        //Category category
-	        //List<Question> questions
-	        //int vigency
-            Survey survey = new Survey(questions: questions, vigency: 2020, category: Category.findByCategory("Área de Sistemas")).save(failOnError: true)
+        def questions = []
+            questions.add(new Question(text: questionsText[0], category: Category.findByName("Talento Humano").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[1], category: Category.findByName("Talento Humano").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[2], category: Category.findByName("Talento Humano").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[3], category: Category.findByName("Direccionamiento Estratégico").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[4], category: Category.findByName("Direccionamiento Estratégico").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[5], category: Category.findByName("Direccionamiento Estratégico").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[6], category: Category.findByName("Direccionamiento Estratégico").childs[3], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[7], category: Category.findByName("Direccionamiento Estratégico").childs[4], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[8], category: Category.findByName("Administración del Riesgo").childs[0], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[9], category: Category.findByName("Administración del Riesgo").childs[1], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[10], category: Category.findByName("Administración del Riesgo").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[11], category: Category.findByName("Administración del Riesgo").childs[2], active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[12], category: Category.findByName("Autoevaluación del Control y Gestión"), active: true).save(failOnError: true, flush: true))
+            questions.add(new Question(text: questionsText[13], category: Category.findByName("Plan de Mejoramiento"), active: true).save(failOnError: true, flush: true))
+                
+        Survey survey = new Survey(questions: questions, vigency: 2020, category: Category.findByName("Área de Servicios")).save(failOnError: true, flush: true)
+        Schedule schedule = new Schedule(startDate: '01/01/2020', endDate: '31/12/2020', vigency: 2020, active: true).save(failOnError: true)
 
-            //Set the vingecy Active:
+        UserAccount user = new UserAccount( fullName : "user", password : "1", username : "user@valueme.com", category: Category.findByName("Área de Servicios")).save(failOnError: true)
+        UserAccountRoleGroup.create user, evaluador
 
-            //@BindingFormat('dd/MM/yyyy')
-	        //Date startDate
-	        //@BindingFormat('dd/MM/yyyy')
-	        //Date endDate
-	        //int vigency
-	        //boolean active
-            Schedule schedule = new Schedule(startDate: '01/01/2020', endDate: '31/12/2020', vigency: 2020, active: true).save(failOnError: true)
+        //Create test assessment
 
-        }
+        Answer answer1 = new Answer(question: Question.get(1), valueScale: 4)
+        Answer answer2 = new Answer(question: Question.get(2), valueScale: 4)
+        Answer answer3 = new Answer(question: Question.get(3), valueScale: 4)
+        Answer answer4 = new Answer(question: Question.get(4), valueScale: 5)
+        Answer answer5 = new Answer(question: Question.get(5), valueScale: 4)
+        Answer answer6 = new Answer(question: Question.get(6), valueScale: 4)
+        Answer answer7 = new Answer(question: Question.get(7), valueScale: 1)
+        Answer answer8 = new Answer(question: Question.get(8), valueScale: 4)
+        Answer answer9 = new Answer(question: Question.get(9), valueScale: 4)
+        Answer answer10 = new Answer(question: Question.get(10), valueScale: 2)
+        Answer answer11 = new Answer(question: Question.get(11), valueScale: 4)
+        Answer answer12 = new Answer(question: Question.get(12), valueScale: 5)
 
-        if(!UserAccount.findByUserAccount("user@valueme.com")){
-            //Create a test user:
-            new UserAccount(
-                active : true,
-                fullName : "user",
-                passwordHash : "1",
-                passwordHashAlgorithm : "bcrypt",
-                userAccount : "user@valueme.com",
-                roles : ["Evaluador"],
-                category: Category.findByCategory("Área de Sistemas")
-            ).save(failOnError: true)
-     }
-     println'BootStrap Application finished'
+        def answers = []
+        answers.addAll([answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, answer10, answer11, answer12])
 
+        Assessment assessment = new Assessment(userAccount: user, vigency: 2020, finished: true, category: Category.findByName("Área de Servicios"), answers: answers, survey: survey )
+
+        assessment.save(failOnError: true, flush: true)
+
+        log.info "Finished bootstraping application"
     }
-    def destroy = {
-    }
+
 }

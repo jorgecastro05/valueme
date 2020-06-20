@@ -7,7 +7,7 @@
 //
 // los javascripts a continuación se llaman en orden, en ultimo lugar se ejecuta este archivo
 //
-//= require jquery-2.2.0.min
+//= require jquery.min.js
 //= require angular.min.js
 //= require angular-resource.min.js
 //= require angular-route.min.js
@@ -91,14 +91,11 @@ $('#rangeend').calendar({
 
 // calendar selector year
 $('#yearDate, .yearDate').calendar({
-    type: 'year'
+    type: 'year',
+    disableMonth: true,
+    disableMinute: true,
+    formatInput: false
 });
-
-// initialize modal popups
-/*function showModal() {
-    $('.ui.modal')
-        .modal('show');
-}*/
 
 // show modal for copy surveys by vigency
 $('.copySurveyVigency').click(function(){
@@ -112,27 +109,3 @@ $('.copySurveyCategory').click(function(){
 
 // maphiglight process map
 $('.map').maphilight();
-
-// popup mesage for assessments valoration scale
-/*$('.radioArea').popup({
-    delay: {
-        show: 500,
-        hide: 0
-    }
-});
-*/
-
-//hide custom elements in all pages html - globally
-$('.category:contains("Módulo EJE TRANSVERSAL INFORMACION Y COMUNICACIÓN")')
-    .text('EJE TRANSVERSAL INFORMACION Y COMUNICACIÓN');
-$('.category:contains("Componente Sistemas de información y comunicación")')
-    .text('Sistemas de información y comunicación');
-$('.category:contains("Componente Información y comunicación interna y externa")')
-    .text('Información y comunicación interna y externa');
-
-// Print Function
-$('#print-survey').click(function(){
-  var newWindow = window.open();
-  newWindow.document.write(document.getElementById("show-survey").innerHTML);
-  newWindow.print();
-});

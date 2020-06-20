@@ -33,9 +33,9 @@
         <!-- buttons -->
         <div class="text-center">
             <div class="ui two buttons">
-                <g:link class="ui  button " action="index">
+                <g:link class="ui blue button " action="index">
                     <g:message code="default.list.label" args="[entityName]" /></g:link>
-                <g:link class="ui  button " action="create">
+                <g:link class="ui blue button " action="create">
                     <g:message code="default.new.label" args="[entityName]" /></g:link>
             </div>
         </div>
@@ -48,7 +48,7 @@
                     <label>
                         <g:message code="userAccount.userAccount.label" />
                     </label>
-                    <f:input bean="userAccount" property="userAccount" />
+                    <f:input bean="userAccount" property="username" />
                 </div>
                 <div class="field">
                     <label>
@@ -58,51 +58,27 @@
                 </div>
                 <div class="inline field">
                     <label>
-                        <g:message code="userAccount.active.label" />
+                        <g:message code="userAccount.enabled.label" />
                     </label>
                     <div class="ui checkbox">
-                        <f:input bean="userAccount" property="active" />
-                    </div>
-                </div>
-                <div class="field">
-                    <label>
-                        <g:message code="userAccount.vigencyStart.label" />
-                    </label>
-                    <div class="ui calendar" id="yearDate">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <g:field type="number" name="userAccount.vigencyStart" value="${userAccount.vigencyStart}" />
-                        </div>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>
-                        <g:message code="userAccount.vigencyEnd.label" />
-                    </label>
-                    <div class="ui calendar">
-                        <div class="ui input left icon">
-                            <i class="calendar icon"></i>
-                            <f:input bean="userAccount" property="vigencyEnd" />
-                        </div>
+                        <f:input bean="userAccount" property="enabled" />
                     </div>
                 </div>
                 <div class="field">
                     <label>
                         <g:message code="category.label" />
                         <div class="selected category">
-                            ${userAccount.category?.category}
+                            ${userAccount.category?.name}
                         </div>
                     </label>
-                    <div class="ui horizontal accordion menu">
-                        <g:each in="${valueme.Category.findAllByTypeAndParentIsNull(valueme.Param.findByName('survey.categoryType')?.value)}" var="category">
-                            <div class="item">
+                    <div class="ui styled fluid accordion">
+                        <g:each in="${categories}" var="category">
                                 <div class="title">
-                                    <i class="dropdown icon"></i> ${category.category}
+                                    <i class="dropdown icon"></i> ${category.name}
                                 </div>
                                 <div class="content">
                                     <g:render template="step" model="${[category: category]}" />
                                 </div>
-                            </div>
                         </g:each>
                     </div>
                 </div>
@@ -110,7 +86,7 @@
                     <label>
                         <g:message code="userAccount.roles.label" />
                     </label>
-                    <g:select class="ui search dropdown" optionKey="role" optionValue="role" multiple="true" name="selRoles" from="${roles}" value="${userAccount.roles}" />
+                    <g:select class="ui search dropdown" optionKey="id" optionValue="name" multiple="true" name="selectedRoles" from="${roles}" value="${userAccount.getAuthorities()}" />
                 </div>
                 <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
             </g:form>

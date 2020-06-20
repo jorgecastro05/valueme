@@ -24,7 +24,7 @@
             <h3></h3>
         </div>
         <div class="four wide column">
-            <g:link class="fluid ui blue fluid button " action="create" params="[categoryType: categoryType]">
+            <g:link class="fluid ui blue fluid button " action="create" params="[categoryType: flash.categoryType]">
                 <g:message code="default.new.label" />
             </g:link>
         </div>
@@ -36,7 +36,7 @@
             <thead>
                 <tr>
                     <th>
-                        <g:message code="category.category.label" />
+                        <g:message code="category.name.label" />
                     </th>
                     <th>
                         <g:message code="category.type.label" />
@@ -58,16 +58,16 @@
                 <tr>
                     <td>
                         <g:if test="${category.childs}">
-                            <g:link action="filterByParent" id="${category.id}">
-                                ${category.category}
+                            <g:link action="filterByParent" id="${category.id}" params="[categoryType: flash.categoryType]">
+                                ${category.name}
                             </g:link>
                         </g:if>
                         <g:else>
-                            ${category.category}
+                            ${category.name}
                         </g:else>
                     </td>
                     <td>
-                        ${category.type}
+                        ${category.type.name}
                     </td>
                     <td>
                         <g:formatBoolean boolean="${category.active}" />
@@ -76,12 +76,12 @@
                         ${category.order}
                     </td>
                     <td>
-                        <g:link action="edit" id="${category.id}" params="[categoryType: categoryType]">
+                        <g:link action="edit" id="${category.id}" params="[categoryType: flash.categoryType]">
                             <g:message code="default.button.edit.label" />
                         </g:link>
                     </td>
                     <td>
-                        <g:link action="show" id="${category.id}" params="[categoryType: categoryType]">
+                        <g:link action="show" id="${category.id}" params="[categoryType: flash.categoryType]">
                             <g:message code="default.button.details.label" />
                         </g:link>
                     </td>

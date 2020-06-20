@@ -2,14 +2,13 @@ package valueme
 
 class Question {
 
-	String id
-	String question
+	String text
 	Category category
 	boolean active
 
 	static belongsTo = [category: Category]
 
     static constraints = {
-    	question unique : true
+    	text unique : true
     }
 }

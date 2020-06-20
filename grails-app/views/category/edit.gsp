@@ -47,13 +47,13 @@
         <label>
         <g:message code="category.category.label"/>
       </label>
-        <f:input bean="category" property="category" />
+        <f:input bean="category" property="name" />
       </div>
       <div class="field">
         <label>
         <g:message code="category.type.label"/>
       </label>
-        <g:select class="ui fluid dropdown" name="type" value="${category.type}" from='${valueme.CategoryType.list()}' optionKey="categoryType" optionValue="categoryType"></g:select>
+        <g:select class="ui fluid dropdown" name="type" value="${category.type}" from='${categoryTypes}' optionKey="id" optionValue="name"></g:select>
       </div>
       <div class="field">
         <label>
@@ -85,7 +85,7 @@
         <label>
         <g:message code="category.parent.label"/>
       </label>
-        <g:select class="ui fluid dropdown" name="parent" value="${category.parent?.id}" noSelection="${['null': '']}" from='${valueme.Category.list()}' optionKey="id" optionValue="category"></g:select>
+        <g:select class="ui fluid dropdown" name="parent" value="${category.parent.id}" noSelection="${['null': '']}" from='${categories}' optionKey="id" optionValue="name"></g:select>
       </div>
       <input class="ui blue fluid button " type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
     </g:form>

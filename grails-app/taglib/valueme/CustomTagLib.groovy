@@ -26,7 +26,7 @@ class CustomTagLib {
     }
 
     def helpLink = { attrs,body ->
-        out << '<a href="https://valueme.lalius.com/wiki/doku.php?id='
+        out << '<a href="https://localhost.com/wiki/doku.php?id='
         out << attrs.page
         out << '" target="_blank" >'
         out << '&nbsp;<i class="fitted small circular help link icon"></i>'
@@ -34,8 +34,7 @@ class CustomTagLib {
     }
 
     def currentYear = { attrs, body ->
-        Date year = new Date()
-        out << year[Calendar.YEAR]
+        out << java.time.LocalDate.now().getYear()
     }
 
 }

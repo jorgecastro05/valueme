@@ -2,7 +2,7 @@
     <g:each in="${category.childs.sort{it.order}}" var="child">
         <h5>
             <li class="category" style="color: ${child.color}">
-                ${child.type} ${child.category}
+                ${child.type.name} ${child.name}
             </li>
         </h5>
       <p>
@@ -33,7 +33,7 @@
                     <g:each var="question" in="${questions}">
                         <tr>
                             <td class="justified aligned">
-                                ${question.question}
+                                ${question.text}
                                 <g:hiddenField class="questionName" name="assessment.answers[${i}].question" value="${question.id}"/>
                             </td>
                             <g:radioGroup name="assessment.answers[${i}].valueScale" values="${0..5}" labels="${0..5}" value="${assessment.answers?.getAt(i)?.valueScale}" readonly="${edit}">

@@ -1,60 +1,86 @@
 package valueme
 
-import grails.transaction.Transactional
-
-@Transactional
 class CategoryService {
 
-    def saveCategory(Category category) {
+    def listRootMeciCategories(){
+        def query = Category.where {
+            (parent.name == Constants.MECI_ROOT)
+        }
+        return query.list()
+    }
 
-    	// add as child to new parent
+    def listMeciCategories(){
+        def query = Category.where {
+            (type.applyTo == Constants.MECI_APPLY_TO || name == Constants.MECI_ROOT)
+        }
+        return query.list()
+    }
+
+    def listProcessCategories(){
+        def query = Category.where {
+            (type.applyTo == Constants.PROCESS_APPLY_TO || name == Constants.PROCESS_ROOT)
+        }
+        return query.list()
+    }
+
+    def listRootProccessCategories(){
+        def query = Category.where {
+            (parent.name == Constants.PROCESS_ROOT)
+        }
+        return query.list()
+    }
+
+    def listChildProccessCategories(){
+        def query = Category.where {
+            (type.applyTo == Constants.PROCESS_APPLY_TO
+             && parent.name != Constants.PROCESS_ROOT
+             && childs.size() == 0 )
+        }
+        return query.list()
+    }
+    
+
+    /*def listCategoriesByType(String categoryType) {
+        def query = Category.where {
+            (type.name == categoryType)
+        }
+        return query.list()
+    }*/
+
+    def saveCategory(Category category) {
     	if(category.parent){
             Category parent = category.parent
-            // force GORM for MongoDB to issue an update for the given property name.
-            parent.markDirty('childs')
-            if(!parent.childs){
-                parent.childs = []
-            }
-            parent.childs.add category
+            parent.addToChilds(category)
             parent.save flush:true
     	}
     	category.save flush:true
     }
 
-
-    def deleteCategory(Category category){
+    def deleteCategory(Category category) {
     	if(category.parent){
             Category parent = category.parent
-            parent.childs.remove category
+            parent.removeFromChilds(category)
             parent.save flush:true
     	}
     	category.childs?.each {
             it.parent = null
             it.save flush:true
     	}
-
-
     	category.delete flush:true
     }
 
     def updateCategory(Category category){
-    	if(category.isDirty('parent')){
-            // add as child to new parent
-            if(category.parent){
-    		Category parent = category.parent
-    		// force GORM for MongoDB to issue an update for the given property name.
-    		parent.markDirty('childs')
-    		if(!parent.childs){
-                    parent.childs = []
-    		}
-    		parent.childs.add category
-    		parent.save flush:true
+    	if(category.isDirty('parent')){ //if parent has changed
+            log.info 'parent has changed for category ' + category
+            Category initialParent = category.getPersistentValue('parent')
+            Category newParent = category.parent
+            log.info 'the initialParent is ' + initialParent
+            log.info 'the newParent is ' + newParent
+            if(initialParent){
+                initialParent.removeFromChilds(category)
             }
-            // delete old child of original parent
-            Category originalParent = category.getPersistentValue('parent')
-            if(originalParent){
-    		originalParent.childs?.remove category
-    		originalParent.save flush:true
+            if(newParent){
+            newParent.addToChilds(category)
             }
         }
         category.save flush:true

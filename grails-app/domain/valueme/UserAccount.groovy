@@ -1,50 +1,38 @@
 package valueme
-import org.springframework.security.crypto.password.PasswordEncoder
 
-class UserAccount {
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import grails.compiler.GrailsCompileStatic
 
-	String id
-	boolean active
-	List<String> roles
-	String userAccount
-	String passwordHash
-	String passwordHashAlgorithm = "bcrypt"
-	String fullName
-	Category category
-	int vigencyStart
-	int vigencyEnd
+@GrailsCompileStatic
+@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)
+class UserAccount implements Serializable {
 
-	static belongsTo = [category: Category]
+    private static final long serialVersionUID = 1
 
-	PasswordEncoder passwordEncoder
+    String username
+    String password
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
+    Category category
+    String fullName
 
-	// transient indicates that this object will not saved in database
-	static transients = ['passwordEncoder']
+    Set<RoleGroup> getAuthorities() {
+        (UserAccountRoleGroup.findAllByUserAccount(this) as List<UserAccountRoleGroup>)*.roleGroup as Set<RoleGroup>
+    }
 
-	static constraints = {
+    static constraints = {
+        password nullable: false, blank: false, password: true, display: false
+        username nullable: false, blank: false, unique: true, email: true
+        category nullable: true // for administrators accounts
+    }
 
-		userAccount unique: true
-		userAccount index: true
-		userAccount email: true
-		category nullable: true // for administrators accounts
-		roles widget: 'select'
-		//passwordHash password: true
-		passwordHashAlgorithm display: false
-	}
+    static mapping = {
+	    password column: '`password`'
+    }
 
-	def beforeInsert() {
-		encodePassword()
-	}
-
-	def beforeUpdate() {
-		// method isDirty ask if passwordHash has changed
-		if (isDirty('passwordHash')) {
-			encodePassword()
-		}
-	}
-
-	protected void encodePassword() {
-		passwordHash = passwordEncoder.encode(passwordHash)
-	}
-
+    static belongsTo = [category: Category]
 }

@@ -45,12 +45,7 @@
                 <label>
                     <g:message code="schedule.vigency.label" />
                 </label>
-                 <div class="ui calendar" id="yearDate">
-                    <div class="ui input left icon">
-                        <i class="calendar icon"></i>
-                        <g:field type="text" name="vigency" value="${schedule.vigency}" />
-                    </div>
-                </div>
+                ${schedule.vigency}
             </div>
             <div class="two fields">
                 <div class="field">

@@ -54,7 +54,7 @@ body {
 }
 
 .footer.segment {
-    background-color: #008db6;
+    background-color: #0E6EB8;
     color: white;
 }
 
@@ -237,4 +237,8 @@ h4.category {
 .ui.very.compact.celled.structured.table td.question {
     text-align: justify;
     background-color: #fee7c5;
+}
+
+.ui.modal {
+    margin: -20% 0 0 -40%;
 }

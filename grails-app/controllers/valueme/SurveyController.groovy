@@ -1,7 +1,7 @@
 package valueme
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 import grails.gorm.*
 
@@ -10,6 +10,8 @@ import grails.gorm.*
 class SurveyController {
 
     def surveyService
+    def categoryService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -34,15 +36,15 @@ class SurveyController {
     }
 
     def show(Survey survey) {
-        respond survey
+        respond survey, 
+            model:[categoriesQuestions: categoryService.listRootMeciCategories(), categoriesSurveys: categoryService.listChildProccessCategories(), 
+            questions: survey.questions, edit: false]
     }
 
     def create() {
-        respond new Question(params)
-    }
-
-    def createFromQuestions(){
-        respond new Survey(params)
+        respond new Survey(params), 
+            model: [categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories(), 
+            questions: Question.findAllByActive(true), edit: true]
     }
 
     @Transactional
@@ -87,9 +89,8 @@ class SurveyController {
             return
         }
 
-        println Survey.findByCategoryAndVigency(survey.category, survey.vigency)
         if(Survey.findByCategoryAndVigency(survey.category, survey.vigency) != null){
-            println "WARNING: Category ALREADY FOUND"
+            log.warn "Category ALREADY FOUND"
             transactionStatus.setRollbackOnly()
             respond survey.errors, view:'index'
         }
@@ -106,7 +107,8 @@ class SurveyController {
     }
 
     def edit(Survey survey) {
-        respond survey
+        respond survey, model:[categories: categoryService.listRootMeciCategories(), categoryTypes: categoryService.listChildProccessCategories(), 
+            questions: Question.findAllByActive(true), edit: true ]
     }
 
     @Transactional
