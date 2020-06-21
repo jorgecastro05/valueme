@@ -24,7 +24,7 @@ For testing purposes, this apps launch an **embedded database SQL H2** and loads
 - **User password:** 1
 
 ## Demo App
-The demo App is deployed on *Heroku* and can be found in this link https://ancient-lowlands-82325.herokuapp.com/ could take a couple of minutes if the Application is not Started yet.
+The demo App is deployed on *Heroku* and can be found in this link https://cryptic-peak-06301.herokuapp.com/ could take a couple of minutes if the Application is not Started yet.
 
 ## Documentation
 
