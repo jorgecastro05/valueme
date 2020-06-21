@@ -109,6 +109,16 @@ task stage() {
     dependsOn bootJar
 }
 
+//clean unneeded build artifacts
+tasks.stage.doLast() {
+    delete fileTree(dir: "build/assets")
+    delete fileTree(dir: "build/classes")
+    delete fileTree(dir: "build/gsp-classes")
+    delete fileTree(dir: "build/gsptmp")
+    delete fileTree(dir: "build/resources")
+    delete fileTree(dir: "build/tmp")
+}
+
 assets {
     minifyJs = true
     minifyCss = true
