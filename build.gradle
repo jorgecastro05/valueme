@@ -106,7 +106,7 @@ tasks.withType(Test) {
 }
 
 task stage() {
-    dependsOn clean, bootJar
+    dependsOn bootJar
 }
 
 assets {
