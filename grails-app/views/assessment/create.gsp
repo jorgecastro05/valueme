@@ -58,9 +58,6 @@
                             ${assessment.userAccount?.fullName}
                         </div>
                         <div class="inline field">
-                            <label>
-                                ${assessment.category?.type.name}:
-                            </label>
                             ${assessment.category?.name}
                         </div>
                         <div class="inline field">
@@ -93,18 +90,16 @@
             <g:set var="i" value="${0}" />
             <g:set var="edit" value="${false}" />
             <div class="field" ng-controller="assessment">
-                <label>
-                    <g:message code="assessment.questions.label" />
-                </label>
                 <div class="ui segment questions">
-                    <ol>
+                    <div class="ui ordered list">
                         <g:each in="${categories.sort{it.order}}" var="category">
-                            <li style="color: ${category.color};">
-                                <h4 class="category">${category.type.name} ${category.name}</h4>
+                            <li class="ui vertical segment" style="color: ${category.color};">
+                                <h4 class="category">${category.name}</h4>
+                                <div class="description">${category.description}</div>
                             </li>
                             <g:render template="step" model="${[category: category]}" />
                         </g:each>
-                    </ol>
+                    </div>
                 </div>
             </div>
             <div class="ui two buttons">

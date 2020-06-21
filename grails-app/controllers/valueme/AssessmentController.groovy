@@ -92,12 +92,13 @@ class AssessmentController {
         if(Assessment.findAllByUserAccountAndVigency(user,vigency).size() > number){
             transactionStatus.setRollbackOnly()
             flash.error =  message(code: 'assessment.maxAssessments.message')
-            respond assessment, view:'create'
+            respond assessment, view:'create', model: [categories: categoryService.listRootMeciCategories()]
             return
         }
 
 
         assessment.finished = true
+        assesments.creationDate = new Date()
         assessment.save flush:true
 
         request.withFormat {

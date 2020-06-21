@@ -9,6 +9,7 @@ class Assessment {
 	int vigency
 	boolean finished
 	Category category
+	Date creationDate
 
 	static belongsTo = [userAccount: UserAccount, category: Category, survey: Survey]
 	static hasMany = [customFields: CustomField, answers: Answer]

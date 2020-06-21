@@ -20,6 +20,7 @@
   - Remove configuration params unused [FIXED]
 - Evaluación
   - Survey show not showing questions. [FIXED]
+  - Cant create asessment new bug
   - Survey edit not showing questions [FIXED]
   - if new survey is created and fail for validation, the redirect error not populates the category and questions.
   - Copiar encuestas para nueva vigencia not working. [FIXED]

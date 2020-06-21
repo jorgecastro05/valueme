@@ -112,7 +112,7 @@ class BootStrap {
         .addToChilds(administracion_del_riesgo_3).save(flush: true)
 
         Category modulo_de_control_de_planeacion_y_gestion = 
-                new Category(name: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: modulo, parent: meciRoot, active: true, order: 0)
+                new Category(name: 'Módulo de Control de Planeación y Gestión', color: 'FFFFFF', type: modulo, description: 'Dentro de este Módulo de Control, se encuentran los componentes y elementos que permiten asegurar de una manera razonable, que la planeación y ejecución de la misma en la entidad tendrán los controles necesarios para su realización.', parent: meciRoot, active: true, order: 0)
         .addToChilds(administracion_del_riesgo)
         .addToChilds(direcionamiento_estrategico)
         .addToChilds(talento_humano).save(flush: true)
@@ -205,7 +205,7 @@ class BootStrap {
         def answers = []
         answers.addAll([answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, answer10, answer11, answer12])
 
-        Assessment assessment = new Assessment(userAccount: user, vigency: 2020, finished: true, category: Category.findByName("Área de Servicios"), answers: answers, survey: survey )
+        Assessment assessment = new Assessment(creationDate: new Date(), userAccount: user, vigency: 2020, finished: true, category: Category.findByName("Área de Servicios"), answers: answers, survey: survey )
 
         assessment.save(failOnError: true, flush: true)
 

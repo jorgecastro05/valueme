@@ -59,6 +59,7 @@
                     <g:sortableColumn property="category" title="${message(code: 'process.label')}" params="[vigency: vigency, category: category?.id]"  />
                     <g:sortableColumn property="vigency" title="${message(code: 'survey.vigency.label')}" params="[vigency: vigency, category: category?.id]"  />
                     <g:sortableColumn property="finished" title="${message(code: 'assessment.finished.label')}"  params="[vigency: vigency, category: category?.id]" />
+                    <g:sortableColumn property="creationDate" title="${message(code: 'assessment.creationDate.label')}"  params="[vigency: vigency, category: category?.id]" />
                     <th>
                         <g:message code="default.options.label" />
                     </th>
@@ -79,6 +80,9 @@
                     </td>
                     <td>
                         <g:formatBoolean boolean="${assessment.finished}" />
+                    </td>
+                    <td>
+                        ${assessment.creationDate}
                     </td>
                     <g:if test="${!assessment.finished}">
                         <td>
